@@ -20,10 +20,10 @@ import (
 // different NIC IDs and routing while this example simply clones interface
 // configuration and stack.
 const (
-	MAC      = "1a:55:89:a2:69:41"
+	MAC      = "1a:55:89:a2:19:42"
 	Netmask  = "255.255.255.0"
-	IP       = "10.0.0.1"
-	Gateway  = "10.0.0.2"
+	IP       = "10.1.7.200"
+	Gateway  = "10.1.7.100"
 	Resolver = "8.8.8.8:53"
 )
 
