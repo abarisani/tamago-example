@@ -25,11 +25,6 @@ TEXT_START := 0x10010000 # ramStart (defined in mem.go under tamago/amd64 packag
 GOENV := GOOS=tamago GOARCH=amd64
 endif
 
-ifeq ($(TARGET),cloud_hypervisor)
-TEXT_START := 0x10010000 # ramStart (defined in mem.go under tamago/amd64 package) + 0x10000
-GOENV := GOOS=tamago GOARCH=amd64
-endif
-
 ifeq ($(TARGET),sifive_u)
 GOENV := GOOS=tamago GOARCH=riscv64
 QEMU ?= qemu-system-riscv64 -machine sifive_u -m 512M \
@@ -60,7 +55,7 @@ QEMU ?= qemu-system-arm -machine mcimx6ul-evk -cpu cortex-a7 -m 512M \
 
 endif
 
-GOFLAGS := -tags ${TAGS},native -trimpath -ldflags "-E cpuinit -T $(TEXT_START) -R 0x1000"
+GOFLAGS := -tags ${TAGS},native -trimpath -ldflags "-T $(TEXT_START) -R 0x1000"
 
 .PHONY: clean qemu qemu-gdb
 

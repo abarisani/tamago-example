@@ -11,11 +11,11 @@ import (
 	"log"
 	"runtime"
 
+	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/arm"
 	"github.com/usbarmory/tamago/soc/nxp/enet"
 	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
 	"github.com/usbarmory/tamago/soc/nxp/usb"
-	"github.com/usbarmory/tamago-example/shell"
 
 	"github.com/usbarmory/tamago/board/usbarmory/mk2"
 )

@@ -1,6 +1,6 @@
 module github.com/usbarmory/tamago-example
 
-go 1.24.2
+go 1.24.3
 
 require (
 	filippo.io/mlkem768 v0.0.0-20241021091500-d85de16e2039
@@ -13,22 +13,22 @@ require (
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.1.0
 	github.com/dustinxie/ecc v0.0.0-20210511000915-959544187564
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
-	github.com/psanford/wormhole-william v1.0.7
-	github.com/transparency-dev/formats v0.0.0-20250324102743-aaf353c6acb0
+	github.com/psanford/wormhole-william v1.0.8
+	github.com/transparency-dev/formats v0.0.0-20250506130620-5cf43164f50c
 	github.com/transparency-dev/witness v0.0.0-20250324104020-c7f89ddf40ba
-	github.com/u-root/u-root v0.14.1-0.20250211171033-17c75c6542a1
+	github.com/u-root/u-root v0.14.0
 	github.com/usbarmory/armory-boot v0.0.0-20250313080757-07776e494cb3
-	github.com/usbarmory/crucible v0.0.0-20250123114515-fa91eabf75f0
+	github.com/usbarmory/crucible v0.0.0-20250415085808-1a3ccb9ae1c7
 	github.com/usbarmory/imx-enet v0.0.0-20250123113228-2e1bd913d818
 	github.com/usbarmory/imx-usbnet v0.0.0-20250123113617-d39929cd7171
-	github.com/usbarmory/tamago v0.0.0-20250415190754-be105f5409b5
+	github.com/usbarmory/tamago v0.0.0-20250507075442-c689bd80aeeb
 	github.com/usbarmory/virtio-net v0.0.0-20250404103528-b6d7d034de85
-	golang.org/x/crypto v0.36.0
-	golang.org/x/crypto/x509roots/fallback v0.0.0-20250317152234-d0a798f77473
+	golang.org/x/crypto v0.38.0
+	golang.org/x/crypto/x509roots/fallback v0.0.0-20250505184708-aae6e6107042
 	golang.org/x/mod v0.24.0
-	golang.org/x/term v0.30.0
-	google.golang.org/grpc v1.71.0
-	tailscale.com v1.82.0
+	golang.org/x/term v0.32.0
+	google.golang.org/grpc v1.72.0
+	tailscale.com v1.82.5
 )
 
 require (
@@ -75,24 +75,24 @@ require (
 	github.com/gorilla/csrf v1.7.3-0.20250123201450-9dd6af1f6d30 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/hdevalence/ed25519consensus v0.2.0 // indirect
 	github.com/illarion/gonotify/v3 v3.0.2 // indirect
 	github.com/insomniacslk/dhcp v0.0.0-20231206064809-8c70d406f6d2 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/jsimonetti/rtnetlink v1.4.0 // indirect
-	github.com/klauspost/compress v1.17.11 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/kortschak/wol v0.0.0-20200729010619-da482cc4850a // indirect
 	github.com/mdlayher/genetlink v1.3.2 // indirect
 	github.com/mdlayher/netlink v1.7.3-0.20250113171957-fbb4dce95f42 // indirect
 	github.com/mdlayher/sdnotify v1.0.0 // indirect
-	github.com/mdlayher/socket v0.5.1 // indirect
+	github.com/mdlayher/socket v0.5.0 // indirect
 	github.com/miekg/dns v1.1.58 // indirect
 	github.com/mitchellh/go-ps v1.0.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/pierrec/lz4/v4 v4.1.21 // indirect
 	github.com/prometheus-community/pro-bing v0.4.0 // indirect
-	github.com/prometheus/client_golang v1.21.1 // indirect
+	github.com/prometheus/client_golang v1.22.0 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.62.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
@@ -105,7 +105,6 @@ require (
 	github.com/tailscale/peercred v0.0.0-20250107143737-35a0c7bd7edc // indirect
 	github.com/tailscale/web-client-prebuilt v0.0.0-20250124233751-d4cd19a26976 // indirect
 	github.com/tailscale/wireguard-go v0.0.0-20250107165329-0b8b35511f19 // indirect
-	github.com/therootcompany/xz v1.0.1 // indirect
 	github.com/transparency-dev/merkle v0.0.3-0.20240919113952-3c979d16ee14 // indirect
 	github.com/transparency-dev/serverless-log v0.0.0-20240408141044-5d483a81bdb7 // indirect
 	github.com/transparency-dev/trillian-tessera v0.1.1 // indirect
@@ -116,10 +115,10 @@ require (
 	go4.org/mem v0.0.0-20240501181205-ae6ca9944745 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
 	golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac // indirect
-	golang.org/x/net v0.37.0 // indirect
-	golang.org/x/sync v0.12.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
+	golang.org/x/sync v0.14.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/text v0.25.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
 	golang.org/x/tools v0.30.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
@@ -130,6 +129,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gvisor.dev/gvisor v0.0.0-20250205023644-9414b50a5633 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
-	nhooyr.io/websocket v1.8.7 // indirect
+	nhooyr.io/websocket v1.8.17 // indirect
 	salsa.debian.org/vasudev/gospake2 v0.0.0-20210510093858-d91629950ad1 // indirect
 )
