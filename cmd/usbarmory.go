@@ -49,5 +49,5 @@ func rebootCmd(_ *shell.Interface, _ []string) (_ string, _ error) {
 }
 
 func HasNetwork() (usb bool, eth bool) {
-	return imx6ul.Native, boardName == "UA-MKII-LAN"
+	return false, boardName == "UA-MKII-LAN"
 }
