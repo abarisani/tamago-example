@@ -3,7 +3,7 @@
 # Use of this source code is governed by the license
 # that can be found in the LICENSE file.
 
-SHELL = /bin/bash
+SHELL = /usr/bin/env bash
 
 APP := example
 TARGET ?= usbarmory
