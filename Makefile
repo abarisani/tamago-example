@@ -181,7 +181,6 @@ $(APP)-signed.imx: check_tamago check_hab_keys $(APP).imx
 		-b ${HAB_KEYS}/IMG_1_crt.pem \
 		-t ${HAB_KEYS}/SRK_1_2_3_4_table.bin \
 		-x 1 \
-		-s \
 		-i $(APP).imx \
 		-o $(APP).csf && \
 	cat $(APP).imx $(APP).csf > $(APP)-signed.imx
