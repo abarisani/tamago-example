@@ -20,13 +20,12 @@ require (
 	github.com/usbarmory/crucible v0.0.0-20250415085808-1a3ccb9ae1c7
 	github.com/usbarmory/imx-enet v0.0.0-20250123113228-2e1bd913d818
 	github.com/usbarmory/imx-usbnet v0.0.0-20250123113617-d39929cd7171
-	github.com/usbarmory/tamago v0.0.0-20250527111453-b3ca14c75a77
+	github.com/usbarmory/tamago v0.0.0-20250527211737-92513e7e3efd
 	github.com/usbarmory/virtio-net v0.0.0-20250404103528-b6d7d034de85
 	golang.org/x/crypto v0.38.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20250505184708-aae6e6107042
 	golang.org/x/mod v0.24.0
 	golang.org/x/term v0.32.0
-	google.golang.org/grpc v1.72.0
 	tailscale.com v1.82.5
 )
 
@@ -50,7 +49,7 @@ require (
 	github.com/aws/smithy-go v1.22.3 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/btcsuite/btclog v0.0.0-20170628155309-84c8d2346e9f // indirect
-	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
+	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/coder/websocket v1.8.12 // indirect
 	github.com/coreos/go-iptables v0.7.1-0.20240112124308-65c67c9f46e6 // indirect
@@ -64,6 +63,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-json-experiment/json v0.0.0-20250223041408-d3c622f1b874 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
+	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.1-0.20230522191255-76236955d466 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
@@ -72,7 +72,6 @@ require (
 	github.com/google/nftables v0.2.1-0.20240414091927-5e242ec57806 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/csrf v1.7.3-0.20250123201450-9dd6af1f6d30 // indirect
-	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/hdevalence/ed25519consensus v0.2.0 // indirect
@@ -112,6 +111,10 @@ require (
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
+	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
+	go.opentelemetry.io/otel v1.35.0 // indirect
+	go.opentelemetry.io/otel/metric v1.35.0 // indirect
+	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go4.org/mem v0.0.0-20240501181205-ae6ca9944745 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
 	golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac // indirect
@@ -123,7 +126,6 @@ require (
 	golang.org/x/tools v0.30.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 	golang.zx2c4.com/wireguard/windows v0.5.3 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250414145226-207652e42e2e // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
