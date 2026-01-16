@@ -11,18 +11,18 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/arm"
 	"github.com/usbarmory/tamago/soc/nxp/enet"
 	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
 	"github.com/usbarmory/tamago/soc/nxp/usb"
 
 	"github.com/usbarmory/tamago/board/usbarmory/mk2"
+	"github.com/usbarmory/tamago-example/shell"
 )
 
 func startInterruptHandler(usb *usb.USB, eth *enet.ENET) {
 	imx6ul.GIC.Init(true, false)
-	imx6ul.GIC.EnableInterrupt(imx6ul.TIMER_IRQ, true)
+	imx6ul.GIC.EnableInterrupt(arm.TIMER_IRQ, true)
 
 	if usb != nil {
 		imx6ul.GIC.EnableInterrupt(usb.IRQ, true)
@@ -36,7 +36,7 @@ func startInterruptHandler(usb *usb.USB, eth *enet.ENET) {
 		irq := imx6ul.GIC.GetInterrupt(true)
 
 		switch {
-		case irq == imx6ul.TIMER_IRQ:
+		case irq == arm.TIMER_IRQ:
 			imx6ul.ARM.SetAlarm(0)
 		case usb != nil && irq == usb.IRQ:
 			handleUSBInterrupt(usb)
@@ -71,11 +71,15 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **enet.ENET) {
 	}
 
 	if hasEth {
-		eth = startEth(console)
+		eth = imx6ul.ENET2
+
+		if !imx6ul.Native {
+			eth = imx6ul.ENET1
+		}
+
+		startEth(eth, console, true)
 		*nic = eth
 	}
 
 	startInterruptHandler(usb, eth)
-
-	return
 }

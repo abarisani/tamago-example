@@ -3,7 +3,7 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
-//go:build cloud_hypervisor || firecracker || microvm
+//go:build cloud_hypervisor || firecracker || microvm || gcp
 
 package network
 
@@ -41,9 +41,6 @@ func startInterruptHandler(dev *vnet.Net, cpu *amd64.CPU, ioapic *ioapic.IOAPIC)
 			for buf := dev.Rx(); buf != nil; buf = dev.Rx() {
 				dev.RxHandler(buf)
 			}
-		case 6:
-			// On Firecracker #UD is raised just once at IRQ
-			// enabling for no apparent reason (bug?).
 		default:
 			log.Printf("internal error, unexpected IRQ %d", irq)
 		}

@@ -3,7 +3,7 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
-//go:build cloud_hypervisor
+//go:build gcp
 
 package network
 
@@ -11,7 +11,7 @@ import (
 	"log"
 
 	"github.com/usbarmory/tamago-example/shell"
-	"github.com/usbarmory/tamago/board/cloud_hypervisor/vm"
+	"github.com/usbarmory/tamago/board/google/gcp"
 	"github.com/usbarmory/tamago/kvm/virtio"
 	"github.com/usbarmory/tamago/soc/intel/pci"
 	"github.com/usbarmory/virtio-net"
@@ -25,19 +25,24 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **vnet.Net) {
 		log.Fatalf("unsupported")
 	}
 
-	transport := &virtio.PCI{
+	transport := &virtio.LegacyPCI{
 		Device: pci.Probe(
 			0,
-			vm.VIRTIO_NET_PCI_VENDOR,
-			vm.VIRTIO_NET_PCI_DEVICE,
+			gcp.VIRTIO_NET_PCI_VENDOR,
+			gcp.VIRTIO_NET_PCI_DEVICE,
 		),
 	}
 
 	dev := &vnet.Net{
 		Transport:    transport,
 		IRQ:          VIRTIO_NET0_IRQ,
-		HeaderLength: 12,
+		HeaderLength: 10,
 	}
+
+	// Google Virtual Private Cloud (GCP) - europe-west1
+	MAC = "42:01:0a:84:00:02"
+	IP = "10.132.0.2"
+	Gateway = "10.132.0.1"
 
 	*nic = dev
 
@@ -48,8 +53,13 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **vnet.Net) {
 
 	// This example illustrates IRQ handling, alternatively a poller can be
 	// used with `dev.Start(true)`.
-	dev.Start(false)
+	go func() {
+		// On GCP we must ensure the ISR is running before starting the
+		// interface.
+		gcp.AMD64.ClearInterrupt()
+		dev.Start(false)
+	}()
 
 	transport.EnableInterrupt(VIRTIO_NET0_IRQ, vnet.ReceiveQueue)
-	startInterruptHandler(dev, vm.AMD64, nil)
+	startInterruptHandler(dev, gcp.AMD64, gcp.IOAPIC0)
 }

@@ -3,7 +3,7 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
-//go:build mx6ullevk || usbarmory
+//go:build imx8mpevk || mx6ullevk || usbarmory
 
 package cmd
 
@@ -17,7 +17,6 @@ import (
 
 	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/dma"
-	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
 	"github.com/usbarmory/tamago/soc/nxp/usdhc"
 )
 
@@ -36,7 +35,7 @@ func init() {
 		Name:    "usdhc",
 		Args:    3,
 		Pattern: regexp.MustCompile(`^usdhc (\d) ([[:xdigit:]]+) (\d+)$`),
-		Syntax:  "<n> <hex offset> <size>",
+		Syntax:  "<n> <hex addr> <size>",
 		Help:    "SD/MMC card read",
 		Fn:      usdhcCmd,
 	})
@@ -127,11 +126,7 @@ func usdhcRead(card *usdhc.USDHC, size int, readSize int) {
 }
 
 func storageTest() {
-	msg("imx6_usdhc")
-
-	if !imx6ul.Native {
-		log.Printf("skipping tests under emulation")
-	}
+	msg("imx_usdhc")
 
 	for _, card := range MMC {
 		usdhcRead(card, totalReadSize, readSize)
