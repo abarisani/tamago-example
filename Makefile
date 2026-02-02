@@ -69,7 +69,11 @@ endif
 ifeq ($(TARGET),$(filter $(TARGET), imx8mpevk mx6ullevk))
 UART1 := stdio
 UART2 := null
-NET   := nic,model=imx.enet,netdev=net0 -netdev tap,id=net0,ifname=tap0,script=no,downscript=no
+ifeq ($(shell uname -s),Darwin)
+NET   ?= nic,model=imx.enet,netdev=net0 -netdev user,id=net0,net=10.0.0.0/24,host=10.0.0.2,hostfwd=tcp:127.0.0.1:2222-10.0.0.1:22,hostfwd=tcp:127.0.0.1:8080-10.0.0.1:80,hostfwd=tcp:127.0.0.1:8443-10.0.0.1:443
+else
+NET   ?= nic,model=imx.enet,netdev=net0 -netdev tap,id=net0,ifname=tap0,script=no,downscript=no
+endif
 TAGS  := $(TARGET),linkramsize
 endif
 
@@ -204,19 +208,19 @@ IMX6UL.yaml: check_tamago
 IMX6UL.yaml: GOMODCACHE=$(shell ${TAMAGO} env GOMODCACHE)
 IMX6UL.yaml: CRUCIBLE_PKG=$(shell grep "github.com/usbarmory/crucible v" go.mod | awk '{print $$1"@"$$2}')
 IMX6UL.yaml:
-	${TAMAGO} install github.com/usbarmory/crucible/cmd/habtool@latest
+	${TAMAGO} mod download $(CRUCIBLE_PKG)
 	cp -f $(GOMODCACHE)/$(CRUCIBLE_PKG)/cmd/crucible/fusemaps/IMX6UL.yaml cmd/IMX6UL.yaml
 
 IMX6ULL.yaml: check_tamago
 IMX6ULL.yaml: GOMODCACHE=$(shell ${TAMAGO} env GOMODCACHE)
 IMX6ULL.yaml: CRUCIBLE_PKG=$(shell grep "github.com/usbarmory/crucible v" go.mod | awk '{print $$1"@"$$2}')
 IMX6ULL.yaml:
-	${TAMAGO} install github.com/usbarmory/crucible/cmd/habtool@latest
+	${TAMAGO} mod download $(CRUCIBLE_PKG)
 	cp -f $(GOMODCACHE)/$(CRUCIBLE_PKG)/cmd/crucible/fusemaps/IMX6ULL.yaml cmd/IMX6ULL.yaml
 
 $(APP).dcd: check_tamago
 $(APP).dcd: GOMODCACHE=$(shell ${TAMAGO} env GOMODCACHE)
-$(APP).dcd: TAMAGO_PKG=$(shell grep "github.com/usbarmory/tamago v" go.mod | awk '{print $$1"@"$$2}')
+$(APP).dcd: TAMAGO_PKG=$(shell go list -m -f '{{.Path}}@{{.Version}}' github.com/usbarmory/tamago)
 $(APP).dcd:
 	@if test "${TARGET}" = "usbarmory"; then \
 		cp -f $(GOMODCACHE)/$(TAMAGO_PKG)/board/usbarmory/mk2/imximage.cfg $(APP).dcd; \
@@ -253,7 +257,7 @@ IMX8MP.yaml: check_tamago
 IMX8MP.yaml: GOMODCACHE=$(shell ${TAMAGO} env GOMODCACHE)
 IMX8MP.yaml: CRUCIBLE_PKG=$(shell grep "github.com/usbarmory/crucible v" go.mod | awk '{print $$1"@"$$2}')
 IMX8MP.yaml:
-	${TAMAGO} install github.com/usbarmory/crucible/cmd/habtool@latest
+	${TAMAGO} mod download $(CRUCIBLE_PKG)
 	cp -f $(GOMODCACHE)/$(CRUCIBLE_PKG)/cmd/crucible/fusemaps/IMX8MP.yaml cmd/IMX8MP.yaml
 
 #### RISCV64 targets ####
@@ -261,7 +265,7 @@ IMX8MP.yaml:
 ifeq ($(TARGET),$(filter $(TARGET), sifive_u))
 
 qemu.dtb: GOMODCACHE=$(shell ${TAMAGO} env GOMODCACHE)
-qemu.dtb: TAMAGO_PKG=$(shell grep "github.com/usbarmory/tamago v" go.mod | awk '{print $$1"@"$$2}')
+qemu.dtb: TAMAGO_PKG=$(shell go list -m -f '{{.Path}}@{{.Version}}' github.com/usbarmory/tamago)
 qemu.dtb:
 	echo $(GOMODCACHE)
 	echo $(TAMAGO_PKG)

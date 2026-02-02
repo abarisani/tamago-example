@@ -71,7 +71,7 @@ func init() {
 		Args:    1,
 		Pattern: regexp.MustCompile(`^cpuidle (on|off)$`),
 		Help:    "CPU idle time management control",
-		Syntax:  "(on|off)?",
+		Syntax:  "(on|off)",
 		Fn:      cpuidleCmd,
 	})
 
@@ -87,15 +87,15 @@ func init() {
 	shell.Add(shell.Cmd{
 		Name:    "date",
 		Args:    1,
-		Pattern: regexp.MustCompile(`^date(.*)`),
-		Syntax:  "(time in RFC339 format)?",
+		Pattern: regexp.MustCompile(`^date(?: (.*))?$`),
+		Syntax:  "(<time in RFC339 format>)?",
 		Help:    "show/change runtime date and time",
 		Fn:      dateCmd,
 	})
 
 	shell.Add(shell.Cmd{
 		Name: "uptime",
-		Help: "show how long the system has been running",
+		Help: "show system running time",
 		Fn:   uptimeCmd,
 	})
 
@@ -205,8 +205,8 @@ func dmaCmd(_ *shell.Interface, arg []string) (string, error) {
 }
 
 func dateCmd(_ *shell.Interface, arg []string) (res string, err error) {
-	if len(arg[0]) > 1 {
-		t, err := time.Parse(time.RFC3339, arg[0][1:])
+	if len(arg[0]) > 0 {
+		t, err := time.Parse(time.RFC3339, arg[0])
 
 		if err != nil {
 			return "", err

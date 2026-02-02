@@ -13,8 +13,8 @@ require (
 	github.com/dustinxie/ecc v0.0.0-20210511000915-959544187564
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
 	github.com/psanford/wormhole-william v1.0.8
-	github.com/transparency-dev/formats v0.0.0-20260112100214-8f78bce6898f
-	github.com/transparency-dev/witness v0.0.0-20260112101525-04a894320784
+	github.com/transparency-dev/formats v0.0.0-20260126105629-a1e81f2894be
+	github.com/transparency-dev/witness v0.0.0-20260130170955-fa130a13485f
 	github.com/u-root/u-root v0.15.0
 	github.com/usbarmory/armory-boot v0.0.0-20251231140651-27eb9ae1b340
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
@@ -26,7 +26,7 @@ require (
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260113154411-7d0074ccc6f1
 	golang.org/x/mod v0.32.0
 	golang.org/x/term v0.39.0
-	tailscale.com v1.94.0
+	tailscale.com v1.94.1
 )
 
 require (
@@ -105,7 +105,7 @@ require (
 	go4.org/mem v0.0.0-20240501181205-ae6ca9944745 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
 	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
-	golang.org/x/net v0.48.0 // indirect
+	golang.org/x/net v0.49.0 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.40.0 // indirect
