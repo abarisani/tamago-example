@@ -39,7 +39,7 @@ func init() {
 }
 
 // NewPersistence returns a persistence object that lives only in memory.
-func NewPersistence() omniwitness.LogStatePersistence {
+func NewPersistence() *inMemoryPersistence {
 	return &inMemoryPersistence{
 		checkpoints: make(map[string][]byte),
 	}
@@ -52,7 +52,7 @@ type inMemoryPersistence struct {
 	checkpoints map[string][]byte
 }
 
-func (p *inMemoryPersistence) Init() error {
+func (p *inMemoryPersistence) Init(_ context.Context) error {
 	return nil
 }
 
@@ -66,13 +66,13 @@ func (p *inMemoryPersistence) Logs() ([]string, error) {
 	return res, nil
 }
 
-func (p *inMemoryPersistence) Latest(logID string) ([]byte, error) {
+func (p *inMemoryPersistence) Latest(_ context.Context, logID string) ([]byte, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 	return p.checkpoints[logID], nil
 }
 
-func (p *inMemoryPersistence) Update(logID string, f func([]byte) ([]byte, error)) error {
+func (p *inMemoryPersistence) Update(_ context.Context, logID string, f func([]byte) ([]byte, error)) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	u, err := f(p.checkpoints[logID])
@@ -84,7 +84,7 @@ func (p *inMemoryPersistence) Update(logID string, f func([]byte) ([]byte, error
 	return nil
 }
 
-var witnessLogs omniwitness.LogStatePersistence
+var witnessLogs *inMemoryPersistence
 
 func dumpWitnessLogs() (s string, err error) {
 	logs, err := witnessLogs.Logs()
@@ -94,7 +94,7 @@ func dumpWitnessLogs() (s string, err error) {
 	}
 
 	for _, logID := range logs {
-		chkpt, err := witnessLogs.Latest(logID)
+		chkpt, err := witnessLogs.Latest(nil, logID)
 
 		if err != nil {
 			return "", fmt.Errorf("failed to get latest checkpoint, %v", err)
