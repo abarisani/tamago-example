@@ -1,6 +1,6 @@
 module github.com/usbarmory/tamago-example
 
-go 1.25.6
+go 1.26.0
 
 require (
 	github.com/Harvey-OS/ninep v0.0.0-20200724082702-d30a6d4f9789
@@ -13,19 +13,19 @@ require (
 	github.com/dustinxie/ecc v0.0.0-20210511000915-959544187564
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
 	github.com/psanford/wormhole-william v1.0.8
-	github.com/transparency-dev/formats v0.0.0-20260126105629-a1e81f2894be
-	github.com/transparency-dev/witness v0.0.0-20260130170955-fa130a13485f
+	github.com/transparency-dev/formats v0.1.0
+	github.com/transparency-dev/witness v0.0.0-20260210171131-80d67677c326
 	github.com/u-root/u-root v0.15.0
-	github.com/usbarmory/armory-boot v0.0.0-20251231140651-27eb9ae1b340
+	github.com/usbarmory/armory-boot v0.0.0-20260202115234-edf170b30f66
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/imx-enet v0.0.0-20250916125511-5a98577af2bd
 	github.com/usbarmory/imx-usbnet v0.0.0-20250916125502-9c92e5468e13
-	github.com/usbarmory/tamago v1.25.6
+	github.com/usbarmory/tamago v1.26.0
 	github.com/usbarmory/virtio-net v0.0.0-20250916125519-733a429bd100
-	golang.org/x/crypto v0.47.0
-	golang.org/x/crypto/x509roots/fallback v0.0.0-20260113154411-7d0074ccc6f1
-	golang.org/x/mod v0.32.0
-	golang.org/x/term v0.39.0
+	golang.org/x/crypto v0.48.0
+	golang.org/x/crypto/x509roots/fallback v0.0.0-20260209214922-2f26647a795e
+	golang.org/x/mod v0.33.0
+	golang.org/x/term v0.40.0
 	tailscale.com v1.94.1
 )
 
@@ -108,8 +108,8 @@ require (
 	golang.org/x/net v0.49.0 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.40.0 // indirect
-	golang.org/x/text v0.33.0 // indirect
+	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 	golang.zx2c4.com/wireguard/windows v0.5.3 // indirect

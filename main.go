@@ -29,8 +29,6 @@ func main() {
 	banner := fmt.Sprintf("%s/%s (%s) • %s",
 		runtime.GOOS, runtime.GOARCH, runtime.Version(), name)
 
-	log.Printf(banner)
-
 	console := &shell.Interface{
 		Banner: banner,
 		Log:    logFile,
@@ -47,6 +45,4 @@ func main() {
 	if runtime.GOARCH != "amd64" {
 		semihosting.Exit()
 	}
-
-	runtime.Exit(0)
 }
