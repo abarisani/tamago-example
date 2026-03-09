@@ -9,6 +9,7 @@ APP := example
 TARGET ?= usbarmory
 TEXT_START := 0x80010000 # ramStart (defined in mem.go under relevant tamago/soc package) + 0x10000
 TAGS := $(TARGET)
+TAMAGO ?= $(shell go tool -n github.com/usbarmory/tamago/cmd/tamago)
 GOOSPKG ?= github.com/usbarmory/tamago
 
 ifeq ($(TARGET),$(filter $(TARGET), microvm gcp))
@@ -48,7 +49,7 @@ QEMU-img ?= qemu-system-x86_64 -machine q35 -m 4G -smp $(SMP) \
             -device isa-debug-exit \
             -device virtio-rng-pci \
             -device virtio-balloon \
-            -device virtio-net-pci=netdev=net0,mac=42:01:0a:84:00:02,disable-modern=true -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
+            -device virtio-net-pci,netdev=net0,mac=42:01:0a:84:00:02,disable-modern=true -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
             -drive file=$(APP).img,format=raw,if=none,id=hd0
 
 endif
