@@ -9,7 +9,6 @@ package network
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/board/cloud_hypervisor/vm"
