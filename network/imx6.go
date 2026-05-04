@@ -36,20 +36,20 @@ func handleEthernetInterrupt(eth *enet.ENET, iface *gnet.Interface, buf []byte) 
 func startInterruptHandler(usb *usb.USB, eth *enet.ENET, iface *gnet.Interface) {
 	var buf []byte
 
-	imx6ul.GIC.Init(true, false)
-	imx6ul.GIC.EnableInterrupt(arm.TIMER_IRQ, true)
+	imx6ul.GIC.Init()
+	imx6ul.GIC.EnableInterrupt(arm.TIMER_IRQ)
 
 	if usb != nil {
-		imx6ul.GIC.EnableInterrupt(usb.IRQ, true)
+		imx6ul.GIC.EnableInterrupt(usb.IRQ)
 	}
 
 	if eth != nil {
 		buf = make([]byte, gnet.EthernetMaximumSize + gnet.MTU)
-		imx6ul.GIC.EnableInterrupt(eth.IRQ, true)
+		imx6ul.GIC.EnableInterrupt(eth.IRQ)
 	}
 
 	isr := func() {
-		irq := imx6ul.GIC.GetInterrupt(true)
+		irq := imx6ul.GIC.GetInterrupt()
 
 		switch {
 		case irq == arm.TIMER_IRQ:
