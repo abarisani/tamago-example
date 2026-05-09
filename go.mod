@@ -1,6 +1,6 @@
 module github.com/usbarmory/tamago-example
 
-go 1.26.2
+go 1.26.3
 
 tool github.com/usbarmory/tamago/cmd/tamago
 
@@ -19,7 +19,7 @@ require (
 	github.com/usbarmory/armory-boot v0.0.0-20260202115234-edf170b30f66
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/go-net v0.0.0-20260416163630-1078311e0956
-	github.com/usbarmory/tamago v1.26.3-0.20260430131709-b757d2d7b0b7
+	github.com/usbarmory/tamago v1.26.3-0.20260509064216-29100dbf75d2
 	golang.org/x/crypto v0.48.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260209214922-2f26647a795e
 	golang.org/x/term v0.40.0
