@@ -50,6 +50,7 @@ func handleChannel(newChannel ssh.NewChannel, console *shell.Interface) {
 	}
 
 	console.Terminal = term.NewTerminal(conn, "")
+	console.Output = console.Terminal
 
 	go func() {
 		for req := range requests {
