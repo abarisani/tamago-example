@@ -13,7 +13,6 @@ import (
 	"net"
 	"runtime/goos"
 
-	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/arm"
 	"github.com/usbarmory/tamago/soc/nxp/enet"
 	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
@@ -44,7 +43,7 @@ func startInterruptHandler(usb *usb.USB, eth *enet.ENET, iface *gnet.Interface) 
 	}
 
 	if eth != nil {
-		buf = make([]byte, gnet.EthernetMaximumSize + gnet.MTU)
+		buf = make([]byte, gnet.EthernetMaximumSize+gnet.MTU)
 		imx6ul.GIC.EnableInterrupt(eth.IRQ)
 	}
 
@@ -73,10 +72,10 @@ func startInterruptHandler(usb *usb.USB, eth *enet.ENET, iface *gnet.Interface) 
 		imx6ul.ARM.WaitInterrupt()
 	}
 
-	arm.ServiceInterrupts(isr)
+	imx6ul.ARM.ServiceInterrupts(isr)
 }
 
-func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **enet.ENET) (err error) {
+func Init(newConsole newShellFn, hasUSB bool, hasEth bool, nic **enet.ENET) (err error) {
 	var usb *usb.USB
 	var eth *enet.ENET
 	var iface *gnet.Interface
@@ -84,7 +83,7 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **enet.ENET) (
 	if hasUSB {
 		usb = imx6ul.USB1
 
-		if iface, err = initStack(console, nil, !hasEth); err != nil {
+		if iface, err = initStack(newConsole, nil, !hasEth); err != nil {
 			return fmt.Errorf("could not start network stack, %v", err)
 		}
 
@@ -96,7 +95,7 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **enet.ENET) (
 		// separate stack, Go runtime network is kept on the latter.
 		if hasEth {
 			l, _ := iface.Stack.(*gnet.GVisorStack).ListenerTCP4(22)
-			StartSSHServer(l, console)
+			StartSSHServer(l, newConsole)
 		}
 	}
 
@@ -114,7 +113,7 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **enet.ENET) (
 			return fmt.Errorf("could not initialize Ethernet, %v", err)
 		}
 
-		if iface, err = initStack(console, eth, true); err != nil {
+		if iface, err = initStack(newConsole, eth, true); err != nil {
 			return fmt.Errorf("could not start network stack, %v", err)
 		}
 

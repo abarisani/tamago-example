@@ -29,19 +29,21 @@ func main() {
 	banner := fmt.Sprintf("%s/%s (%s) • %s",
 		runtime.GOOS, runtime.GOARCH, runtime.Version(), name)
 
-	console := &shell.Interface{
-		Banner: banner,
-		Log:    logFile,
-	}
-
-	if hasUSB, hasEth := cmd.HasNetwork(); hasUSB || hasEth {
-		if err := network.Init(console, hasUSB, hasEth, &cmd.NIC); err != nil {
-			log.Print(err)
+	newConsole := func() *shell.Interface {
+		return &shell.Interface{
+			Banner:     banner,
+			ReadWriter: cmd.Terminal,
 		}
 	}
 
-	console.ReadWriter = cmd.Terminal
-	console.Start(true)
+	if hasUSB, hasEth := cmd.HasNetwork(); hasUSB || hasEth {
+		if err := network.Init(newConsole, hasUSB, hasEth, &cmd.NIC); err != nil {
+			log.Print(err)
+		}
+	} else {
+		console := newConsole()
+		console.Start(true)
+	}
 
 	if runtime.GOARCH != "amd64" {
 		semihosting.Exit()

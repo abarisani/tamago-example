@@ -16,7 +16,6 @@ import (
 	_ "golang.org/x/crypto/x509roots/fallback"
 
 	"github.com/usbarmory/go-net"
-	"github.com/usbarmory/tamago-example/shell"
 )
 
 // This example starts TCP/IP networking on all available network
@@ -35,19 +34,19 @@ var (
 	Resolver = "8.8.8.8:53"
 )
 
-func bindServices(stack gnet.Stack, console *shell.Interface) (err error) {
+func bindServices(stack gnet.Stack, newConsole newShellFn) (err error) {
 	// hook interface into Go runtime
 	net.SetDefaultNS([]string{Resolver})
 	net.SocketFunc = stack.Socket
 
-	if console != nil {
+	if newConsole != nil {
 		listenerSSH, err := net.Listen("tcp4", ":22")
 
 		if err != nil {
 			return fmt.Errorf("could not initialize SSH listener, %v", err)
 		}
 
-		StartSSHServer(listenerSSH, console)
+		StartSSHServer(listenerSSH, newConsole)
 	}
 
 	listenerHTTP, err := net.Listen("tcp4", ":80")
@@ -62,7 +61,8 @@ func bindServices(stack gnet.Stack, console *shell.Interface) (err error) {
 		return fmt.Errorf("could not initialize HTTP listener, %v", err)
 	}
 
-	SetupStaticWebAssets(console.Banner)
+	//SetupStaticWebAssets(console.Banner)
+	SetupStaticWebAssets("FIXME")
 
 	StartWebServer(listenerHTTP, IP, 80, false)
 	StartWebServer(listenerHTTPS, IP, 443, true)
@@ -70,7 +70,7 @@ func bindServices(stack gnet.Stack, console *shell.Interface) (err error) {
 	return
 }
 
-func initStack(console *shell.Interface, dev gnet.NetworkDevice, services bool) (iface *gnet.Interface, err error) {
+func initStack(newConsole newShellFn, dev gnet.NetworkDevice, services bool) (iface *gnet.Interface, err error) {
 	iface = &gnet.Interface{
 		NetworkDevice: dev,
 	}
@@ -86,7 +86,7 @@ func initStack(console *shell.Interface, dev gnet.NetworkDevice, services bool) 
 	iface.Stack.EnableICMP()
 
 	if services {
-		err = bindServices(iface.Stack, console)
+		err = bindServices(iface.Stack, newConsole)
 	}
 
 	return

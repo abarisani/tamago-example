@@ -18,7 +18,6 @@ import (
 	"github.com/usbarmory/tamago/soc/nxp/imx8mp"
 
 	"github.com/usbarmory/go-net"
-	"github.com/usbarmory/tamago-example/shell"
 )
 
 func handleEthernetInterrupt(eth *enet.ENET, iface *gnet.Interface, buf []byte) {
@@ -39,7 +38,7 @@ func startInterruptHandler(eth *enet.ENET, iface *gnet.Interface) {
 	imx8mp.GIC.EnableInterrupt(arm64.TIMER_IRQ)
 
 	if eth != nil {
-		buf = make([]byte, gnet.EthernetMaximumSize + gnet.MTU)
+		buf = make([]byte, gnet.EthernetMaximumSize+gnet.MTU)
 		imx8mp.GIC.EnableInterrupt(eth.IRQ)
 	}
 
@@ -69,7 +68,7 @@ func startInterruptHandler(eth *enet.ENET, iface *gnet.Interface) {
 	arm64.ServiceInterrupts(isr)
 }
 
-func Init(console *shell.Interface, _ bool, _ bool, nic **enet.ENET) (err error) {
+func Init(newConsole newShellFn, _ bool, _ bool, nic **enet.ENET) (err error) {
 	var eth *enet.ENET
 	var iface *gnet.Interface
 
@@ -82,7 +81,7 @@ func Init(console *shell.Interface, _ bool, _ bool, nic **enet.ENET) (err error)
 		return fmt.Errorf("could not initialize network device, %v", err)
 	}
 
-	if iface, err = initStack(console, eth, true); err != nil {
+	if iface, err = initStack(newConsole, eth, true); err != nil {
 		return fmt.Errorf("could not start network stack, %v", err)
 	}
 

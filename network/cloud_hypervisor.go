@@ -10,7 +10,6 @@ package network
 import (
 	"fmt"
 
-	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/board/cloud_hypervisor/vm"
 	"github.com/usbarmory/tamago/kvm/virtio"
 	"github.com/usbarmory/tamago/soc/intel/pci"
@@ -22,7 +21,7 @@ import (
 // chosen by the application for MSI-X signaling
 const VIRTIO_NET0_IRQ = 32
 
-func Init(console *shell.Interface, _ bool, _ bool, nic **vnet.Net) (err error) {
+func Init(newConsole newShellFn, _ bool, _ bool, nic **vnet.Net) (err error) {
 	transport := &virtio.PCI{
 		Device: pci.Probe(
 			0,
@@ -44,7 +43,7 @@ func Init(console *shell.Interface, _ bool, _ bool, nic **vnet.Net) (err error) 
 		return fmt.Errorf("could not initialize VirtIO device, %v", err)
 	}
 
-	iface, err := initStack(console, dev, true)
+	iface, err := initStack(newConsole, dev, true)
 
 	if err != nil {
 		return fmt.Errorf("could not start network stack, %v", err)

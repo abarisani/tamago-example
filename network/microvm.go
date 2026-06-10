@@ -10,7 +10,6 @@ package network
 import (
 	"fmt"
 
-	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/board/qemu/microvm"
 	"github.com/usbarmory/tamago/kvm/virtio"
 
@@ -18,7 +17,7 @@ import (
 	"github.com/usbarmory/go-net/virtio"
 )
 
-func Init(console *shell.Interface, _ bool, _ bool, nic **vnet.Net) (err error) {
+func Init(newConsole newShellFn, _ bool, _ bool, nic **vnet.Net) (err error) {
 	dev := &vnet.Net{
 		Transport: &virtio.MMIO{
 			Base: microvm.VIRTIO_NET0_BASE,
@@ -34,7 +33,7 @@ func Init(console *shell.Interface, _ bool, _ bool, nic **vnet.Net) (err error) 
 		return fmt.Errorf("could not initialize VirtIO device, %v", err)
 	}
 
-	iface, err := initStack(console, dev, true)
+	iface, err := initStack(newConsole, dev, true)
 
 	if err != nil {
 		return fmt.Errorf("could not start network stack, %v", err)

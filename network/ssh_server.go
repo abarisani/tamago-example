@@ -14,7 +14,6 @@ import (
 	"io"
 	"log"
 	"net"
-	"os"
 	"time"
 
 	"golang.org/x/crypto/ssh"
@@ -26,9 +25,12 @@ import (
 // DefaultDeadline represents the SSH server connection deadline.
 var DefaultDeadline = 30 * time.Second
 
+type newShellFn func() *shell.Interface
+
 func handleTerminal(conn ssh.Channel, console *shell.Interface) {
-	log.SetOutput(io.MultiWriter(os.Stdout, console.Log, console.Terminal))
-	defer log.SetOutput(os.Stdout)
+	w := log.Writer()
+	log.SetOutput(io.MultiWriter(w, console.Terminal))
+	defer log.SetOutput(w)
 
 	console.Start(true)
 
@@ -36,7 +38,7 @@ func handleTerminal(conn ssh.Channel, console *shell.Interface) {
 	conn.Close()
 }
 
-func handleChannel(newChannel ssh.NewChannel, console *shell.Interface) {
+func handleChannel(newChannel ssh.NewChannel, newConsole newShellFn) {
 	if t := newChannel.ChannelType(); t != "session" {
 		newChannel.Reject(ssh.UnknownChannelType, fmt.Sprintf("unknown channel type: %s", t))
 		return
@@ -49,6 +51,7 @@ func handleChannel(newChannel ssh.NewChannel, console *shell.Interface) {
 		return
 	}
 
+	console := newConsole()
 	console.Terminal = term.NewTerminal(conn, "")
 	console.Output = console.Terminal
 
@@ -100,13 +103,13 @@ func handleChannel(newChannel ssh.NewChannel, console *shell.Interface) {
 	}()
 }
 
-func handleChannels(chans <-chan ssh.NewChannel, console *shell.Interface) {
+func handleChannels(chans <-chan ssh.NewChannel, newConsole newShellFn) {
 	for newChannel := range chans {
-		go handleChannel(newChannel, console)
+		go handleChannel(newChannel, newConsole)
 	}
 }
 
-func handleConn(conn net.Conn, console *shell.Interface, srv *ssh.ServerConfig) {
+func handleConn(conn net.Conn, newConsole newShellFn, srv *ssh.ServerConfig) {
 	sshConn, chans, reqs, err := ssh.NewServerConn(conn, srv)
 
 	if err != nil {
@@ -120,10 +123,10 @@ func handleConn(conn net.Conn, console *shell.Interface, srv *ssh.ServerConfig) 
 	log.Printf("new ssh connection from %s (%s)", sshConn.RemoteAddr(), sshConn.ClientVersion())
 
 	go ssh.DiscardRequests(reqs)
-	go handleChannels(chans, console)
+	go handleChannels(chans, newConsole)
 }
 
-func accept(listener net.Listener, console *shell.Interface, srv *ssh.ServerConfig) {
+func accept(listener net.Listener, newConsole newShellFn, srv *ssh.ServerConfig) {
 	for {
 		conn, err := listener.Accept()
 
@@ -133,11 +136,11 @@ func accept(listener net.Listener, console *shell.Interface, srv *ssh.ServerConf
 		}
 
 		conn.SetDeadline(time.Now().Add(DefaultDeadline))
-		go handleConn(conn, console, srv)
+		go handleConn(conn, newConsole, srv)
 	}
 }
 
-func StartSSHServer(listener net.Listener, console *shell.Interface) {
+func StartSSHServer(listener net.Listener, newConsole newShellFn) {
 	srv := &ssh.ServerConfig{
 		NoClientAuth: true,
 	}
@@ -157,5 +160,5 @@ func StartSSHServer(listener net.Listener, console *shell.Interface) {
 	srv.AddHostKey(signer)
 
 	log.Printf("starting ssh server (%s) at %s", ssh.FingerprintSHA256(signer.PublicKey()), listener.Addr())
-	go accept(listener, console, srv)
+	go accept(listener, newConsole, srv)
 }

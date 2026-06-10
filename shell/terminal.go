@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 
 	"golang.org/x/term"
 )
@@ -27,9 +26,6 @@ type Interface struct {
 	Prompt string
 	// Banner represents the welcome message
 	Banner string
-
-	// Log represents the interface log file
-	Log *os.File
 
 	// ReadWriter represents the terminal connection
 	ReadWriter io.ReadWriter
