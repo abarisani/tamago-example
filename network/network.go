@@ -73,6 +73,7 @@ func bindServices(stack gnet.Stack, newConsole newShellFn) (err error) {
 func initStack(newConsole newShellFn, dev gnet.NetworkDevice, services bool) (iface *gnet.Interface, err error) {
 	iface = &gnet.Interface{
 		NetworkDevice: dev,
+		Stack: newStack(),
 	}
 
 	if err := iface.Init(IP+CIDR, MAC, Gateway); err != nil {

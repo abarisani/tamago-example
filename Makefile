@@ -8,7 +8,8 @@ SHELL = /bin/bash
 APP := example
 TARGET ?= usbarmory
 TEXT_START := 0x80010000 # ramStart (defined in mem.go under relevant tamago/soc package) + 0x10000
-TAGS := $(TARGET)
+NET ?= gvisor
+TAGS := $(TARGET),$(NET)
 TAMAGO ?= $(shell go tool -n github.com/usbarmory/tamago/cmd/tamago)
 GOOSPKG ?= github.com/usbarmory/tamago
 
@@ -101,7 +102,7 @@ QEMU ?= qemu-system-arm -machine mcimx6ul-evk -cpu cortex-a7 -m 512M \
         -serial $(UART1) -serial $(UART2) -net $(NET)
 endif
 
-GOFLAGS := -tags ${TAGS},native -trimpath -ldflags "-T $(TEXT_START) -R 0x1000"
+GOFLAGS := -tags ${TAGS},native -trimpath -ldflags "-s -w -T $(TEXT_START) -R 0x1000"
 
 .PHONY: clean qemu qemu-gdb
 

@@ -18,7 +18,7 @@ require (
 	github.com/u-root/u-root v0.16.0
 	github.com/usbarmory/armory-boot v0.0.0-20260410072034-d4cd302c7f4c
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
-	github.com/usbarmory/go-net v0.0.0-20260416163630-1078311e0956
+	github.com/usbarmory/go-net v0.0.0-20260611153012-6400d3be7bab
 	github.com/usbarmory/tamago v1.26.5-0.20260610074550-3e634b46c53d
 	golang.org/x/crypto v0.52.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260604135805-d37c95e27de6
@@ -58,6 +58,7 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.25 // indirect
 	github.com/pires/go-proxyproto v0.8.1 // indirect
 	github.com/safchain/ethtool v0.3.0 // indirect
+	github.com/soypat/lneto v0.1.1-0.20260609173350-82f946154800 // indirect
 	github.com/tailscale/certstore v0.1.1-0.20260409135935-3638fb84b77d // indirect
 	github.com/tailscale/go-winio v0.0.0-20231025203758-c4f33415bf55 // indirect
 	github.com/tailscale/hujson v0.0.0-20260302212456-ecc657c15afd // indirect

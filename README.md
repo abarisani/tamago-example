@@ -236,6 +236,14 @@ Build and run the application executables as follows:
 make qemu TARGET=sifive_u
 ```
 
+Network stack
+=============
+
+On networked targets by default
+[gVisor](https://github.com/google/gvisor/tree/go) is selected as network stack
+implementation, alternatively [lneto](https://github.com/soypat/lneto) can be
+selected by passing `NET=lneto` to the build environment.
+
 Emulated hardware with QEMU
 ===========================
 
