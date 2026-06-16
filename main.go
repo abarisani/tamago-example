@@ -26,12 +26,11 @@ func main() {
 
 	name, _ := cmd.Target()
 
-	banner := fmt.Sprintf("%s/%s (%s) • %s",
-		runtime.GOOS, runtime.GOARCH, runtime.Version(), name)
+	network.Banner += fmt.Sprintf("• %s", name)
 
 	newConsole := func() *shell.Interface {
 		return &shell.Interface{
-			Banner:     banner,
+			Banner:     network.Banner,
 			ReadWriter: cmd.Terminal,
 		}
 	}

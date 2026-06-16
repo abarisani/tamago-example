@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"runtime"
 
 	// maintained set of TLS roots for any potential TLS client requests
 	_ "golang.org/x/crypto/x509roots/fallback"
@@ -26,6 +27,7 @@ import (
 // different NIC IDs and routing while this example simply clones interface
 // configuration and stack.
 var (
+	Banner   = fmt.Sprintf("%s/%s (%s)", runtime.GOOS, runtime.GOARCH, runtime.Version())
 	MAC      = "1a:55:89:a2:69:41"
 	Netmask  = "255.255.255.0"
 	CIDR     = "/24"
@@ -61,8 +63,7 @@ func bindServices(stack gnet.Stack, newConsole newShellFn) (err error) {
 		return fmt.Errorf("could not initialize HTTP listener, %v", err)
 	}
 
-	//SetupStaticWebAssets(console.Banner)
-	SetupStaticWebAssets("FIXME")
+	SetupStaticWebAssets(Banner)
 
 	StartWebServer(listenerHTTP, IP, 80, false)
 	StartWebServer(listenerHTTPS, IP, 443, true)
