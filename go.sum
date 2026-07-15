@@ -188,8 +188,8 @@ github.com/rogpeppe/go-internal v1.14.1 h1:UQB4HGPB6osV0SQTLymcB4TgvyWu6ZyliaW0t
 github.com/rogpeppe/go-internal v1.14.1/go.mod h1:MaRKkUm5W0goXpeCfT7UZI6fk/L7L7so1lCWt35ZSgc=
 github.com/safchain/ethtool v0.3.0 h1:gimQJpsI6sc1yIqP/y8GYgiXn/NjgvpM0RNoWLVVmP0=
 github.com/safchain/ethtool v0.3.0/go.mod h1:SA9BwrgyAqNo7M+uaL6IYbxpm5wk3L7Mm6ocLW+CJUs=
-github.com/soypat/lneto v0.1.1-0.20260609173350-82f946154800 h1:DO6h8xFE/NbUZNDjIRMnOEXOQykAUB5Jfe0RXEEqijU=
-github.com/soypat/lneto v0.1.1-0.20260609173350-82f946154800/go.mod h1:Be5PjwoYukvHFiUXxpYi8+ppH2F/gw/vjGBvFdv+Ti8=
+github.com/soypat/lneto v0.2.0 h1:h+59QBUgWbpq/4LWOp31+6usVybN01mTDMcVW5U8OxM=
+github.com/soypat/lneto v0.2.0/go.mod h1:Be5PjwoYukvHFiUXxpYi8+ppH2F/gw/vjGBvFdv+Ti8=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 github.com/tailscale/certstore v0.1.1-0.20260409135935-3638fb84b77d h1:JcGKBZAL7ePLwOhUdN8qGQZlP5GueEiIZwY7R62pejE=
@@ -228,12 +228,8 @@ github.com/usbarmory/armory-boot v0.0.0-20260410072034-d4cd302c7f4c h1:BiiEFdNqo
 github.com/usbarmory/armory-boot v0.0.0-20260410072034-d4cd302c7f4c/go.mod h1:Ut0PLSVlEWNDotc43KrCBc1A2mWi+A/py0rvoicUl0I=
 github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c h1:085Xai8lKeaO7NicFnhLAn5Aa4uuPR9V5D8HbygYCA8=
 github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c/go.mod h1:ckguQ9IhSOqu3Aj5k739o8aleJE8q1ZwmUsQEKkXpiM=
-github.com/usbarmory/go-net v0.0.0-20260416163630-1078311e0956 h1:ZjhVXLMT/Ogxs1GIy1g8UJk7yi9G8kt90D0ElAPbaCc=
-github.com/usbarmory/go-net v0.0.0-20260416163630-1078311e0956/go.mod h1:+6WiKCFJtJQZdNM2VpwQsYGo/aBJ39pN7nWx6Td3Z8s=
 github.com/usbarmory/go-net v0.0.0-20260611153012-6400d3be7bab h1:nnqzG/6ZIowZrcGBm5CKzpGJJtUcTyLzLhsJo0ppUuA=
 github.com/usbarmory/go-net v0.0.0-20260611153012-6400d3be7bab/go.mod h1:buOhhKgCq3hxLvQ3QUMVHZy5XKcxFcx4zjOgGc2PEas=
-github.com/usbarmory/tamago v1.26.5-0.20260610074550-3e634b46c53d h1:gHIfRHvSrSxvpNttGLDN9h8qabOXZ+iD2WKuEqcpuyk=
-github.com/usbarmory/tamago v1.26.5-0.20260610074550-3e634b46c53d/go.mod h1:HZkb+ZkzFl8aCxAuF7exsKX+XaNM0mYG9Iv7ooX1WDY=
 github.com/usbarmory/tamago v1.26.5-0.20260626120227-bb8159e64f82 h1:ECtf6KSzmjyYWfSJiGjISJpcYD5UYFnk+j9HxlPAHFs=
 github.com/usbarmory/tamago v1.26.5-0.20260626120227-bb8159e64f82/go.mod h1:HZkb+ZkzFl8aCxAuF7exsKX+XaNM0mYG9Iv7ooX1WDY=
 github.com/vishvananda/netns v0.0.5 h1:DfiHV+j8bA32MFM7bfEunvT8IAqQ/NzSJHtcmW5zdEY=
