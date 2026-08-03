@@ -271,7 +271,7 @@ func zeroKnowledgeProof(log *log.Logger) (err error) {
 
 	log.Printf("  commitment: %x", proof.R.SerializeCompressed())
 	log.Printf("    response: %x", s[:])
-	log.Printf("   statement: knowledge of the key for %.20x...", privKey.PubKey().SerializeCompressed())
+	log.Printf("   statement: knowledge of the key for %.19x...", privKey.PubKey().SerializeCompressed())
 
 	return
 }
