@@ -120,7 +120,7 @@ func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 }
 
 func cryptoTest() {
-	spawn(btcdTest)
+	spawn(btcTest)
 	spawn(kemTest)
 	spawn(caamTest)
 

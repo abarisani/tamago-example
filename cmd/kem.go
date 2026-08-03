@@ -85,7 +85,8 @@ func kemRoundTrip(log *log.Logger) (err error) {
 		return errors.New("dk != dk2")
 	}
 
-	log.Printf("mlkem %x (%s)", dk.Bytes(), time.Since(start))
+	log.Printf("mlkem %x", dk.Bytes()[0:37])
+	log.Printf("      %x (%s)", dk.Bytes()[37:], time.Since(start))
 
 	return
 }

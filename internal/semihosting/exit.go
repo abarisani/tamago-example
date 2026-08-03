@@ -3,7 +3,7 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
-//go:build semihosting && !amd64
+//go:build semihosting && !amd64 && !loong64
 
 package semihosting
 

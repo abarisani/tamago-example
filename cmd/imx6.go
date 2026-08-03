@@ -190,7 +190,7 @@ func freqCmd(_ *shell.Interface, arg []string) (res string, err error) {
 }
 
 func cryptoTest() {
-	spawn(btcdTest)
+	spawn(btcTest)
 	spawn(kemTest)
 	spawn(caamTest)
 	spawn(dcpTest)

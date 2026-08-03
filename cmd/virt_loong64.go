@@ -3,7 +3,7 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
-//go:build sifive_u
+//go:build virt_loong64
 
 package cmd
 
@@ -14,24 +14,24 @@ import (
 	"runtime"
 
 	"github.com/usbarmory/tamago-example/shell"
-	"github.com/usbarmory/tamago/board/qemu/sifive_u"
-	"github.com/usbarmory/tamago/soc/sifive/fu540"
+	_ "github.com/usbarmory/tamago/board/qemu/virt"
+	"github.com/usbarmory/tamago/soc/loongson/ls3a5000"
 )
 
-const boardName = "qemu-system-riscv64 (sifive_u)"
+const boardName = "qemu-system-loongarch64 (virt)"
 
 var NIC interface{}
 
 func init() {
-	Terminal = sifive_u.UART0
+	Terminal = ls3a5000.UART0
 }
 
 func date(epoch int64) {
-	fu540.RV64.SetTime(epoch)
+	ls3a5000.LA64.SetTime(epoch)
 }
 
 func uptime() (ns int64) {
-	return fu540.RV64.GetTime() - fu540.RV64.TimerOffset
+	return ls3a5000.LA64.GetTime() - ls3a5000.LA64.TimerOffset
 }
 
 func infoCmd(_ *shell.Interface, _ []string) (string, error) {
@@ -39,13 +39,13 @@ func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 
 	ramStart, ramEnd := runtime.MemRegion()
 	name, freq := Target()
-	features := fu540.RV64.Features()
+	features := ls3a5000.LA64.Features()
 
-	fmt.Fprintf(&res, "Runtime ......: %s %s/%s thread %d\n", runtime.Version(), runtime.GOOS, runtime.GOARCH, fu540.RV64.ID())
+	fmt.Fprintf(&res, "Runtime ......: %s %s/%s thread %d\n", runtime.Version(), runtime.GOOS, runtime.GOARCH, ls3a5000.LA64.ID())
 	fmt.Fprintf(&res, "RAM ..........: %#08x-%#08x (%d MiB)\n", ramStart, ramEnd, (ramEnd-ramStart)/(1024*1024))
 	fmt.Fprintf(&res, "Board ........: %s\n", boardName)
 	fmt.Fprintf(&res, "SoC ..........: %s\n", name)
-	fmt.Fprintf(&res, "Extensions ...: %s\n", features.Extensions)
+	fmt.Fprintf(&res, "Features .....: %+v\n", features)
 	fmt.Fprintf(&res, "Frequency ....: %v MHz\n", freq/1e6)
 
 	return res.String(), nil
@@ -69,5 +69,5 @@ func HasNetwork() (_ bool, eth bool) {
 }
 
 func Target() (name string, freq uint32) {
-	return fu540.Model(), fu540.Freq()
+	return "ls3a5000", 100e6
 }

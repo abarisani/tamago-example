@@ -151,13 +151,12 @@ func memTest() {
 		for i := 0; i <= chunks-1; i++ {
 			buf[i] = make([]byte, chunkSize)
 		}
+		runtime.GC()
 	}
-
-	runtime.GC()
 
 	runtime.ReadMemStats(&memstats)
 	totalAllocated := uint64(runs) * uint64(chunks) * uint64(chunkSize)
 
-	log.Printf("%d MiB allocated (Mallocs: %d Frees: %d HeapSys: %d NumGC:%d)",
+	log.Printf("%d MiB allocated (Mallocs:%d Frees:%d HeapSys:%d NumGC:%d)",
 		totalAllocated/(1024*1024), memstats.Mallocs, memstats.Frees, memstats.HeapSys, memstats.NumGC)
 }

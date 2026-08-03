@@ -69,6 +69,13 @@ QEMU ?= qemu-system-riscv64 -machine sifive_u -m 512M \
         -dtb $(CURDIR)/qemu.dtb -bios $(CURDIR)/tools/bios.bin
 endif
 
+ifeq ($(TARGET),virt_loong64)
+TEXT_START := 0x1000000 # ramStart (defined in mem.go under tamago/amd64 package) + 0x10000
+GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=loong64
+QEMU ?= qemu-system-loongarch64 -machine virt -m 256M \
+        -nographic -monitor none -serial stdio -net none
+endif
+
 ifeq ($(TARGET),$(filter $(TARGET), imx8mpevk mx6ullevk))
 UART1 := stdio
 UART2 := null
@@ -102,7 +109,7 @@ QEMU ?= qemu-system-arm -machine mcimx6ul-evk -cpu cortex-a7 -m 512M \
         -serial $(UART1) -serial $(UART2) -net $(NET)
 endif
 
-GOFLAGS := -tags ${TAGS},${STACK},native -trimpath -ldflags "-s -w -T $(TEXT_START) -R 0x1000"
+GOFLAGS := -tags ${TAGS},${STACK},native -trimpath -ldflags "-T $(TEXT_START) -R 0x1000"
 
 .PHONY: clean qemu qemu-gdb
 
@@ -264,9 +271,16 @@ IMX8MP.yaml:
 	${TAMAGO} mod download $(CRUCIBLE_PKG)
 	cp -f $(GOMODCACHE)/$(CRUCIBLE_PKG)/cmd/crucible/fusemaps/IMX8MP.yaml cmd/IMX8MP.yaml
 
+#### LOONG64 targets ####
+
+ifeq ($(TARGET),virt_loong64)
+$(APP): check_tamago
+	$(GOENV) $(TAMAGO) build $(GOFLAGS) -o ${APP}
+endif
+
 #### RISCV64 targets ####
 
-ifeq ($(TARGET),$(filter $(TARGET), sifive_u))
+ifeq ($(TARGET),sifive_u)
 
 qemu.dtb: GOMODCACHE=$(shell ${TAMAGO} env GOMODCACHE)
 qemu.dtb: TAMAGO_PKG=$(shell ${TAMAGO} list -m -f '{{.Path}}@{{.Version}}' github.com/usbarmory/tamago)

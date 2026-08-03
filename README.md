@@ -24,17 +24,18 @@ This example Go application illustrates use of the
 [tamago](https://github.com/usbarmory/tamago) package
 execute bare metal Go code on the following platforms:
 
-| Processor             | Platform                                                                                                                                                                             | SoC/CPU package                                                           | Support package                                                                                  |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| AMD/Intel 64-bit      | [Cloud Hypervisor](https://www.cloudhypervisor.org)                                                                                                                                  | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)            | [cloud_hypervisor/vm](https://github.com/usbarmory/tamago/tree/master/board/cloud_hypervisor/vm) |
-| AMD/Intel 64-bit      | [QEMU microvm](https://www.qemu.org/docs/master/system/i386/microvm.html)                                                                                                            | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)            | [qemu/microvm](https://github.com/usbarmory/tamago/tree/master/board/qemu/microvm)               |
-| AMD/Intel 64-bit      | [Firecracker microvm](https://firecracker-microvm.github.io)                                                                                                                         | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)            | [firecracker/microvm](https://github.com/usbarmory/tamago/tree/master/board/firecracker/microvm) |
-| AMD/Intel 64-bit      | [Google Compute Engine](https://cloud.google.com/products/compute)                                                                                                                   | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)            | [google/gcp](https://github.com/usbarmory/tamago/tree/master/board/google/gcp)                   |
-| NXP i.MX6ULZ/i.MX6UL  | [USB armory Mk II](https://github.com/usbarmory/usbarmory/wiki/Mk-II-Introduction)                                                                                                   | [imx6ul](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx6ul)  | [usbarmory/mk2](https://github.com/usbarmory/tamago/tree/master/board/usbarmory)                 |
-| NXP i.MX6ULL/i.MX6UL  | [USB armory Mk II LAN](https://github.com/usbarmory/usbarmory/wiki/Mk-II-LAN)                                                                                                        | [imx6ul](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx6ul)  | [usbarmory/mk2](https://github.com/usbarmory/tamago/tree/master/board/usbarmory)                 |
-| NXP i.MX6ULL/i.MX6ULZ | [MCIMX6ULL-EVK](https://www.nxp.com/design/development-boards/i-mx-evaluation-and-development-boards/evaluation-kit-for-the-i-mx-6ull-and-6ulz-applications-processor:MCIMX6ULL-EVK) | [imx6ul](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx6ul)  | [nxp/mx6ullevk](https://github.com/usbarmory/tamago/tree/master/board/nxp/mx6ullevk)             |
-| NXP i.MX8M Plus       | [8MPLUSLPD4-EVK](https://www.nxp.com/design/design-center/development-boards-and-designs/8MPLUSLPD4-EVK)                                                                             | [imx8mp](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx8mp)  | [imx8mpevk](https://github.com/usbarmory/tamago/tree/master/board/nxp/imx8mpevk)                 |
-| SiFive FU540          | [QEMU sifive_u](https://www.qemu.org/docs/master/system/riscv/sifive_u.html)                                                                                                         | [fu540](https://github.com/usbarmory/tamago/tree/master/soc/sifive/fu540) | [qemu/sifive_u](https://github.com/usbarmory/tamago/tree/master/board/qemu/sifive_u)             |
+| Processor             | Platform                                                                                                                                                                             | SoC/CPU package                                                                   | Support package                                                                                  |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| AMD/Intel 64-bit      | [Cloud Hypervisor](https://www.cloudhypervisor.org)                                                                                                                                  | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)                    | [cloud_hypervisor/vm](https://github.com/usbarmory/tamago/tree/master/board/cloud_hypervisor/vm) |
+| AMD/Intel 64-bit      | [QEMU microvm](https://www.qemu.org/docs/master/system/i386/microvm.html)                                                                                                            | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)                    | [qemu/microvm](https://github.com/usbarmory/tamago/tree/master/board/qemu/microvm)               |
+| AMD/Intel 64-bit      | [Firecracker microvm](https://firecracker-microvm.github.io)                                                                                                                         | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)                    | [firecracker/microvm](https://github.com/usbarmory/tamago/tree/master/board/firecracker/microvm) |
+| AMD/Intel 64-bit      | [Google Compute Engine](https://cloud.google.com/products/compute)                                                                                                                   | [amd64](https://github.com/usbarmory/tamago/tree/master/amd64)                    | [google/gcp](https://github.com/usbarmory/tamago/tree/master/board/google/gcp)                   |
+| NXP i.MX6ULZ/i.MX6UL  | [USB armory Mk II](https://github.com/usbarmory/usbarmory/wiki/Mk-II-Introduction)                                                                                                   | [imx6ul](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx6ul)          | [usbarmory/mk2](https://github.com/usbarmory/tamago/tree/master/board/usbarmory)                 |
+| NXP i.MX6ULL/i.MX6UL  | [USB armory Mk II LAN](https://github.com/usbarmory/usbarmory/wiki/Mk-II-LAN)                                                                                                        | [imx6ul](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx6ul)          | [usbarmory/mk2](https://github.com/usbarmory/tamago/tree/master/board/usbarmory)                 |
+| NXP i.MX6ULL/i.MX6ULZ | [MCIMX6ULL-EVK](https://www.nxp.com/design/development-boards/i-mx-evaluation-and-development-boards/evaluation-kit-for-the-i-mx-6ull-and-6ulz-applications-processor:MCIMX6ULL-EVK) | [imx6ul](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx6ul)          | [nxp/mx6ullevk](https://github.com/usbarmory/tamago/tree/master/board/nxp/mx6ullevk)             |
+| NXP i.MX8M Plus       | [8MPLUSLPD4-EVK](https://www.nxp.com/design/design-center/development-boards-and-designs/8MPLUSLPD4-EVK)                                                                             | [imx8mp](https://github.com/usbarmory/tamago/tree/master/soc/nxp/imx8mp)          | [imx8mpevk](https://github.com/usbarmory/tamago/tree/master/board/nxp/imx8mpevk)                 |
+| SiFive FU540          | [QEMU sifive_u](https://www.qemu.org/docs/master/system/riscv/sifive_u.html)                                                                                                         | [fu540](https://github.com/usbarmory/tamago/tree/master/soc/sifive/fu540)         | [qemu/sifive_u](https://github.com/usbarmory/tamago/tree/master/board/qemu/sifive_u)             |
+| Loongson 3A5000       | [QEMU virt](https://www.qemu.org/docs/master/system/loongarch/virt.html)                                                                                                             | [ls3a5000](https://github.com/usbarmory/tamago/tree/master/soc/loongson/ls3a5000) | [qemu/virt](https://github.com/usbarmory/tamago/tree/master/board/qemu/virt)                     |
 
 > [!NOTE]
 > TamaGo also supports [UEFI](https://uefi.org/), see [go-boot](https://github.com/usbarmory/go-boot/)
@@ -60,7 +61,7 @@ external libraries:
   * Timer operation.
   * Sleep operation.
   * Random bytes collection (gathered from SoC TRNG on non-emulated runs).
-  * Test BTC transaction creation and signing.
+  * Assorted BTC/ZK proofs crypto tests through btcsuite.
   * Test post-quantum key encapsulation (KEM).
   * Hardware accelerated encryption (on non-emulated runs, if available).
   * Large memory allocation.
@@ -223,12 +224,25 @@ Build and run the application executables as follows:
 make qemu TARGET=imx8mpevk
 ```
 
+Building and executing on LOONG64 targets
+=========================================
+
+| `TARGET`       | Board     | Executing and debugging                                                                         | Interface      |
+|----------------|-----------|-------------------------------------------------------------------------------------------------|----------------|
+| `virt_loong64` | QEMU virt | [virt](https://github.com/usbarmory/tamago/tree/master/board/qemu/virt#executing-and-debugging) | Serial console |
+
+Build and run the application executables as follows:
+
+```
+make qemu TARGET=virt_loong64
+```
+
 Building and executing on RISCV64 targets
 =========================================
 
-| `TARGET`    | Board            | Executing and debugging                                                                                 | Interface       |
-|-------------|------------------|---------------------------------------------------------------------------------------------------------|-----------------|
-| `sifive_u`  | QEMU sifive_u    | [sifive_u](https://github.com/usbarmory/tamago/tree/master/board/qemu/sifive_u#executing-and-debugging) | Serial console  |
+| `TARGET`   | Board            | Executing and debugging                                                                                 | Interface      |
+|------------|------------------|---------------------------------------------------------------------------------------------------------|----------------|
+| `sifive_u` | QEMU sifive_u    | [sifive_u](https://github.com/usbarmory/tamago/tree/master/board/qemu/sifive_u#executing-and-debugging) | Serial console |
 
 Build and run the application executables as follows:
 

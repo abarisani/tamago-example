@@ -208,7 +208,7 @@ func rebootCmd(_ *shell.Interface, _ []string) (_ string, err error) {
 }
 
 func cryptoTest() {
-	spawn(btcdTest)
+	spawn(btcTest)
 	spawn(kemTest)
 }
 
