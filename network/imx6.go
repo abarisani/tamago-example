@@ -69,7 +69,7 @@ func startInterruptHandler(usb *usb.USB, eth *enet.ENET, iface *gnet.Interface) 
 		}
 
 		imx6ul.ARM.SetAlarm(pollUntil)
-		imx6ul.ARM.WaitInterrupt()
+		imx6ul.ARM.Idle()
 	}
 
 	imx6ul.ARM.ServiceInterrupts(isr)

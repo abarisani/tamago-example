@@ -62,10 +62,10 @@ func startInterruptHandler(eth *enet.ENET, iface *gnet.Interface) {
 		}
 
 		imx8mp.ARM64.SetAlarm(pollUntil)
-		imx8mp.ARM64.WaitInterrupt()
+		imx8mp.ARM64.Idle()
 	}
 
-	arm64.ServiceInterrupts(isr)
+	imx8mp.ARM64.ServiceInterrupts(isr)
 }
 
 func Init(newConsole newShellFn, _ bool, _ bool, nic **enet.ENET) (err error) {

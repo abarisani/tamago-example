@@ -16,7 +16,7 @@ require (
 	github.com/usbarmory/armory-boot v0.0.0-20260606204932-9c2bd55b018c
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/go-net v0.0.0-20260714134120-c2c964e7084c
-	github.com/usbarmory/tamago v1.26.6-0.20260803075710-91e08435ca1a
+	github.com/usbarmory/tamago v1.26.6-0.20260810214514-e5e19b31ce22
 	golang.org/x/crypto v0.54.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260723152544-d701c51f7e4e
 	golang.org/x/term v0.45.0

@@ -16,6 +16,7 @@ import (
 	"runtime"
 	"runtime/goos"
 	"strconv"
+	"time"
 	"unsafe"
 
 	"github.com/usbarmory/crucible/fusemap"
@@ -25,6 +26,7 @@ import (
 	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
 	"github.com/usbarmory/tamago/soc/nxp/snvs"
 
+	"github.com/usbarmory/tamago-example/internal/cpu"
 	"github.com/usbarmory/tamago-example/internal/semihosting"
 	"github.com/usbarmory/tamago-example/shell"
 )
@@ -71,6 +73,15 @@ func loadFuseMap() (err error) {
 
 func init() {
 	dma.Init(dmaStart, dmaSize)
+
+	shell.Add(shell.Cmd{
+		Name:    "top",
+		Args:    1,
+		Pattern: regexp.MustCompile(`^top (\d+)$`),
+		Syntax:  "top <samples>",
+		Help:    "show CPU usage",
+		Fn:      topCmd,
+	})
 
 	if !imx6ul.Native {
 		goos.Exit = func(_ int32) {
@@ -187,6 +198,18 @@ func freqCmd(_ *shell.Interface, arg []string) (res string, err error) {
 	_, freq := Target()
 
 	return fmt.Sprintf("%v MHz", float32(freq)/1e6), err
+}
+
+func topCmd(console *shell.Interface, arg []string) (string, error) {
+	n, err := strconv.Atoi(arg[0])
+
+	if err != nil {
+		return "", fmt.Errorf("invalid count, %v", err)
+	}
+
+	cpu.Top(imx6ul.ARM, 2 * time.Second, n, console.Output)
+
+	return "", nil
 }
 
 func cryptoTest() {
