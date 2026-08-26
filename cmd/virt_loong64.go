@@ -14,6 +14,7 @@ import (
 	"runtime"
 
 	"github.com/usbarmory/tamago-example/shell"
+	goospkg "github.com/usbarmory/tamago/goos"
 	_ "github.com/usbarmory/tamago/board/qemu/virt"
 	"github.com/usbarmory/tamago/soc/loongson/ls3a5000"
 )
@@ -37,7 +38,7 @@ func uptime() (ns int64) {
 func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	var res bytes.Buffer
 
-	ramStart, ramEnd := runtime.MemRegion()
+	ramStart, ramEnd := goospkg.MemRegion()
 	name, freq := Target()
 	features := ls3a5000.LA64.Features()
 

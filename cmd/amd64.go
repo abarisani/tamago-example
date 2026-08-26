@@ -23,6 +23,7 @@ import (
 	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/amd64"
 	"github.com/usbarmory/tamago/amd64/lapic"
+	goospkg "github.com/usbarmory/tamago/goos"
 
 	"github.com/usbarmory/go-net/virtio"
 )
@@ -71,7 +72,7 @@ func init() {
 func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	var res bytes.Buffer
 
-	ramStart, ramEnd := runtime.MemRegion()
+	ramStart, ramEnd := goospkg.MemRegion()
 	name, freq := Target()
 
 	fmt.Fprintf(&res, "Runtime ......: %s %s/%s thread %d\n", runtime.Version(), runtime.GOOS, runtime.GOARCH, goos.ProcID())

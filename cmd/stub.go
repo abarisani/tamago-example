@@ -13,6 +13,7 @@ import (
 	"log"
 	"runtime"
 
+	goospkg "github.com/usbarmory/tamago/goos"
 	"github.com/usbarmory/tamago-example/shell"
 )
 
@@ -53,7 +54,7 @@ func uptime() (ns int64) {
 func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	var res bytes.Buffer
 
-	ramStart, ramEnd := runtime.MemRegion()
+	ramStart, ramEnd := goospkg.MemRegion()
 
 	fmt.Fprintf(&res, "Runtime ......: %s %s/%s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	fmt.Fprintf(&res, "RAM ..........: %#08x-%#08x (%d MiB)\n", ramStart, ramEnd, (ramEnd-ramStart)/(1024*1024))
