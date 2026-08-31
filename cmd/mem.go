@@ -18,7 +18,7 @@ import (
 	"strconv"
 
 	"github.com/usbarmory/tamago/dma"
-	goospkg "github.com/usbarmory/tamago/goos"
+	"github.com/usbarmory/tamago/mem"
 
 	"github.com/usbarmory/tamago-example/shell"
 )
@@ -139,7 +139,7 @@ func memTest() {
 	//
 	// This is not something unique to `GOOS=tamago` but more evident as,
 	// when running on bare metal, there is no swap or OS virtual memory.
-	ramStart, ramEnd := goospkg.MemRegion()
+	ramStart, ramEnd := mem.Region()
 	memoryLimit := float64(ramEnd-ramStart) * 0.90
 	debug.SetMemoryLimit(int64(math.Round(memoryLimit)))
 

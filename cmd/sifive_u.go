@@ -15,7 +15,7 @@ import (
 
 	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/board/qemu/sifive_u"
-	goospkg "github.com/usbarmory/tamago/goos"
+	"github.com/usbarmory/tamago/mem"
 	"github.com/usbarmory/tamago/soc/sifive/fu540"
 )
 
@@ -38,7 +38,7 @@ func uptime() (ns int64) {
 func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	var res bytes.Buffer
 
-	ramStart, ramEnd := goospkg.MemRegion()
+	ramStart, ramEnd := mem.Region()
 	name, freq := Target()
 	features := fu540.RV64.Features()
 

@@ -9,9 +9,9 @@ package network
 
 import (
 	"log"
-	"runtime/goos"
 
 	"github.com/usbarmory/tamago/amd64"
+	"github.com/usbarmory/tamago/goospkg"
 	"github.com/usbarmory/tamago/soc/intel/ioapic"
 
 	"github.com/usbarmory/go-net"

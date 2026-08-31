@@ -13,7 +13,6 @@ import (
 	"regexp"
 	"runtime"
 	"runtime/debug"
-	"runtime/goos"
 	"runtime/pprof"
 	"sort"
 	"strconv"
@@ -25,6 +24,7 @@ import (
 
 	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/dma"
+	"github.com/usbarmory/tamago/goospkg"
 )
 
 var Terminal io.ReadWriter

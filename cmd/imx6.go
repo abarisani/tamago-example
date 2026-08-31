@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"regexp"
 	"runtime"
-	"runtime/goos"
 	"strconv"
 	"time"
 	"unsafe"
@@ -23,7 +22,8 @@ import (
 
 	"github.com/usbarmory/tamago/arm"
 	"github.com/usbarmory/tamago/dma"
-	goospkg "github.com/usbarmory/tamago/goos"
+	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/mem"
 	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
 	"github.com/usbarmory/tamago/soc/nxp/snvs"
 
@@ -42,7 +42,7 @@ const (
 	romSize  = 0x17000
 )
 
-//go:linkname ramSize github.com/usbarmory/tamago/goos.RamSize
+//go:linkname ramSize github.com/usbarmory/tamago/mem.RamSize
 var ramSize uint = 0x20000000 - dmaSize // 512MB - 10MB
 
 var (
@@ -139,7 +139,7 @@ func uptime() (ns int64) {
 func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	var res bytes.Buffer
 
-	ramStart, ramEnd := goospkg.MemRegion()
+	ramStart, ramEnd := mem.Region()
 	name, freq := Target()
 
 	fmt.Fprintf(&res, "Runtime ......: %s %s/%s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
