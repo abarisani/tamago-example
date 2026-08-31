@@ -14,7 +14,6 @@ import (
 	"runtime"
 
 	"github.com/usbarmory/tamago-example/shell"
-	"github.com/usbarmory/tamago/goospkg"
 	"github.com/usbarmory/tamago/mem"
 	_ "github.com/usbarmory/tamago/board/qemu/virt"
 	"github.com/usbarmory/tamago/soc/loongson/ls3a5000"

@@ -25,7 +25,7 @@ func main() {
 
 	name, _ := cmd.Target()
 
-	network.Banner += fmt.Sprintf("• %s", name)
+	network.Banner += fmt.Sprintf(" • %s", name)
 
 	newConsole := func() *shell.Interface {
 		return &shell.Interface{

@@ -11,6 +11,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/usbarmory/tamago/goospkg"
 )
 
 const sleep = 100 * time.Millisecond
@@ -45,7 +47,7 @@ func wakeTest() (tag string, res string) {
 
 	go func() {
 		time.Sleep(sleep)
-		signal.Relay(syscall.SIGTRAP)
+		goos.SendSignal(int(syscall.SIGTRAP))
 	}()
 
 	if <-c != syscall.SIGTRAP {

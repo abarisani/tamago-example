@@ -2,6 +2,8 @@ module github.com/usbarmory/tamago-example
 
 go 1.27.0
 
+tool github.com/usbarmory/tamago/cmd/tamago
+
 replace github.com/usbarmory/tamago => /mnt/git/public/tamago
 
 require (
