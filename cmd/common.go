@@ -24,7 +24,7 @@ import (
 
 	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/dma"
-	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/goos"
 )
 
 var Terminal io.ReadWriter

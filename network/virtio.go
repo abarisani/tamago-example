@@ -11,7 +11,7 @@ import (
 	"log"
 
 	"github.com/usbarmory/tamago/amd64"
-	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/goos"
 	"github.com/usbarmory/tamago/soc/intel/ioapic"
 
 	"github.com/usbarmory/go-net"

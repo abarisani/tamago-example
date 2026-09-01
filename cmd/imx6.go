@@ -22,7 +22,7 @@ import (
 
 	"github.com/usbarmory/tamago/arm"
 	"github.com/usbarmory/tamago/dma"
-	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/goos"
 	"github.com/usbarmory/tamago/mem"
 	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
 	"github.com/usbarmory/tamago/soc/nxp/snvs"

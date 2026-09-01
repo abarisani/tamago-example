@@ -13,7 +13,7 @@ import (
 	"net"
 
 	"github.com/usbarmory/tamago/arm64"
-	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/goos"
 	"github.com/usbarmory/tamago/soc/nxp/enet"
 	"github.com/usbarmory/tamago/soc/nxp/imx8mp"
 

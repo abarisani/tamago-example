@@ -11,7 +11,7 @@ TEXT_START := 0x80010000 # ramStart (defined in mem.go under relevant tamago/soc
 STACK ?= gvisor
 TAGS := $(TARGET)
 TAMAGO ?= $(shell go tool -n github.com/usbarmory/tamago/cmd/tamago)
-GOOSPKG ?= github.com/usbarmory/tamago
+GOOSPKG ?= github.com/usbarmory/tamago/goos
 
 ifeq ($(TARGET),$(filter $(TARGET), microvm gcp))
 

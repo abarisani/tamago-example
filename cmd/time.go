@@ -12,7 +12,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/goos"
 )
 
 const sleep = 100 * time.Millisecond

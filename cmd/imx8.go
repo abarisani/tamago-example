@@ -20,7 +20,7 @@ import (
 	"github.com/usbarmory/crucible/fusemap"
 
 	"github.com/usbarmory/tamago/dma"
-	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/goos"
 	"github.com/usbarmory/tamago/mem"
 	"github.com/usbarmory/tamago/soc/nxp/dcp"
 	"github.com/usbarmory/tamago/soc/nxp/imx8mp"

@@ -13,7 +13,7 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/usbarmory/tamago/goospkg"
+	"github.com/usbarmory/tamago/goos"
 	"github.com/usbarmory/tamago/mem"
 
 	"github.com/usbarmory/tamago-example/shell"
