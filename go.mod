@@ -4,8 +4,6 @@ go 1.27.1
 
 tool github.com/usbarmory/tamago/cmd/tamago
 
-replace github.com/usbarmory/tamago => /mnt/git/public/tamago
-
 require (
 	github.com/Harvey-OS/ninep v0.0.0-20200724082702-d30a6d4f9789
 	github.com/arl/statsviz v0.8.1
