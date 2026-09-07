@@ -12,10 +12,10 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"runtime"
 	"strconv"
 
 	"github.com/usbarmory/tamago-example/shell"
+	"github.com/usbarmory/tamago/mem"
 	"github.com/usbarmory/tamago/soc/nxp/caam"
 )
 
@@ -60,7 +60,7 @@ func rticCmd(_ *shell.Interface, arg []string) (res string, err error) {
 		})
 	}
 
-	textStart, textEnd := runtime.TextRegion()
+	textStart, textEnd := mem.Text()
 
 	blocks = append(blocks, caam.MemoryBlock{
 		Address: uint32(textStart),

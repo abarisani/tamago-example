@@ -39,11 +39,14 @@ func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	var res bytes.Buffer
 
 	ramStart, ramEnd := mem.Region()
+	txtStart, txtEnd := mem.Text()
+
 	name, freq := Target()
 	features := ls3a5000.LA64.Features()
 
 	fmt.Fprintf(&res, "Runtime ......: %s %s/%s thread %d\n", runtime.Version(), runtime.GOOS, runtime.GOARCH, ls3a5000.LA64.ID())
 	fmt.Fprintf(&res, "RAM ..........: %#08x-%#08x (%d MiB)\n", ramStart, ramEnd, (ramEnd-ramStart)/(1024*1024))
+	fmt.Fprintf(&res, "Text .........: %#08x-%#08x (%d MiB)\n", txtStart, txtEnd, (txtEnd-txtStart)/(1025*1024))
 	fmt.Fprintf(&res, "Board ........: %s\n", boardName)
 	fmt.Fprintf(&res, "SoC ..........: %s\n", name)
 	fmt.Fprintf(&res, "Features .....: %+v\n", features)

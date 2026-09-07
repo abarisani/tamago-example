@@ -70,7 +70,7 @@ QEMU ?= qemu-system-riscv64 -machine sifive_u -m 512M \
 endif
 
 ifeq ($(TARGET),virt_loong64)
-TEXT_START := 0x1000000 # ramStart (defined in mem.go under tamago ls3a5000 package) + 0x10000
+TEXT_START := 0x01010000 # ramStart (defined in mem.go under tamago ls3a5000 package) + 0x10000
 GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=loong64
 QEMU ?= qemu-system-loongarch64 -machine virt -m 256M \
         -nographic -monitor none -serial stdio -net none
@@ -110,7 +110,7 @@ QEMU ?= qemu-system-arm -machine mcimx6ul-evk -cpu cortex-a7 -m 512M \
         -serial $(UART1) -serial $(UART2) -net $(NET)
 endif
 
-GOFLAGS := -tags ${TAGS},${STACK},native -trimpath -ldflags "-T $(TEXT_START) -R 0x1000"
+GOFLAGS := -tags ${TAGS},${STACK},native -trimpath -ldflags "-T $(TEXT_START)"
 
 .PHONY: clean qemu qemu-gdb
 
