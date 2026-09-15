@@ -33,9 +33,9 @@ func init() {
 	shell.Add(shell.Cmd{
 		Name:    "cpuid",
 		Args:    2,
-		Pattern: regexp.MustCompile(`^cpuid ([[:xdigit:]]+) ([[:xdigit:]]+)$`),
+		Pattern: regexp.MustCompile(`^cpuid\s+([[:xdigit:]]+) ([[:xdigit:]]+)$`),
 		Syntax:  "<leaf> <subleaf>",
-		Help:    "display CPU capabilities",
+		Help:    "show CPU capabilities",
 		Fn:      cpuidCmd,
 	})
 
