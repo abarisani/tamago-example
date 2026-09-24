@@ -11,8 +11,11 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
+	"regexp"
 	"runtime"
 	"runtime/goos"
+	"strconv"
+	"time"
 	_ "unsafe"
 
 	"github.com/usbarmory/crucible/fusemap"
@@ -22,6 +25,7 @@ import (
 	"github.com/usbarmory/tamago/soc/nxp/imx8mp"
 	"github.com/usbarmory/tamago/soc/nxp/snvs"
 
+	"github.com/usbarmory/tamago-example/internal/cpu"
 	"github.com/usbarmory/tamago-example/internal/semihosting"
 	"github.com/usbarmory/tamago-example/shell"
 )
@@ -63,6 +67,15 @@ func loadFuseMap() (err error) {
 
 func init() {
 	dma.Init(dmaStart, dmaSize)
+
+	shell.Add(shell.Cmd{
+		Name:    "top",
+		Args:    1,
+		Pattern: regexp.MustCompile(`^top (\d+)$`),
+		Syntax:  "top <samples>",
+		Help:    "show CPU usage",
+		Fn:      topCmd,
+	})
 
 	if !imx8mp.Native {
 		goos.Exit = func(_ int32) {
@@ -112,11 +125,27 @@ func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	fmt.Fprintf(&res, "SoC ..........: %s\n", name)
 	fmt.Fprintf(&res, "Frequency ....: %v MHz\n", float32(freq)/1e6)
 
+	if NIC != nil {
+		fmt.Fprintf(&res, "ENET%d ........: %s %d\n", NIC.Index, NIC.MAC, NIC.Stats)
+	}
+
 	return res.String(), nil
 }
 
+func topCmd(console *shell.Interface, arg []string) (string, error) {
+	n, err := strconv.Atoi(arg[0])
+
+	if err != nil {
+		return "", fmt.Errorf("invalid count, %v", err)
+	}
+
+	cpu.Top(imx8mp.ARM64, 2*time.Second, n, console.Output)
+
+	return "", nil
+}
+
 func cryptoTest() {
-	spawn(btcdTest)
+	spawn(btcTest)
 	spawn(kemTest)
 	spawn(caamTest)
 

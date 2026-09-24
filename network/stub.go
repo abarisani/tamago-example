@@ -8,8 +8,12 @@
 package network
 
 import (
+	"fmt"
 	"log"
+	"runtime"
 )
+
+var Banner = fmt.Sprintf("%s/%s (%s)", runtime.GOOS, runtime.GOARCH, runtime.Version())
 
 func Init(_ any, _ bool, _ bool, _ any) (_ any) {
 	log.Fatal("unsupported")

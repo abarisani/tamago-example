@@ -59,8 +59,12 @@ func tailscaleCmd(console *shell.Interface, arg []string) (res string, err error
 		return
 	}
 
-	c := *console
-	network.StartSSHServer(listenerSSH, &c)
+	newConsole := func() *shell.Interface {
+		c := *console
+		return &c
+	}
+
+	network.StartSSHServer(listenerSSH, newConsole)
 
 	listenerHTTP, err := s.Listen("tcp", fmt.Sprintf(":%d", 80))
 

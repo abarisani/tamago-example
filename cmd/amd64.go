@@ -18,11 +18,13 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/amd64"
 	"github.com/usbarmory/tamago/amd64/lapic"
-	"github.com/usbarmory/virtio-net"
+
+	"github.com/usbarmory/go-net/virtio"
 )
 
 var NIC *vnet.Net
@@ -31,9 +33,9 @@ func init() {
 	shell.Add(shell.Cmd{
 		Name:    "cpuid",
 		Args:    2,
-		Pattern: regexp.MustCompile(`^cpuid ([[:xdigit:]]+) ([[:xdigit:]]+)$`),
+		Pattern: regexp.MustCompile(`^cpuid\s+([[:xdigit:]]+) ([[:xdigit:]]+)$`),
 		Syntax:  "<leaf> <subleaf>",
-		Help:    "display CPU capabilities",
+		Help:    "show CPU capabilities",
 		Fn:      cpuidCmd,
 	})
 
@@ -72,7 +74,7 @@ func infoCmd(_ *shell.Interface, _ []string) (string, error) {
 	ramStart, ramEnd := runtime.MemRegion()
 	name, freq := Target()
 
-	fmt.Fprintf(&res, "Runtime ......: %s %s/%s GOMAXPROCS=%d\n", runtime.Version(), runtime.GOOS, runtime.GOARCH, runtime.GOMAXPROCS(-1))
+	fmt.Fprintf(&res, "Runtime ......: %s %s/%s thread %d\n", runtime.Version(), runtime.GOOS, runtime.GOARCH, goos.ProcID())
 	fmt.Fprintf(&res, "RAM ..........: %#08x-%#08x (%d MiB)\n", ramStart, ramEnd, (ramEnd-ramStart)/(1024*1024))
 	fmt.Fprintf(&res, "Board ........: %s\n", boardName)
 	fmt.Fprintf(&res, "CPU ..........: %s\n", name)
@@ -131,6 +133,7 @@ func smpCmd(console *shell.Interface, arg []string) (string, error) {
 	var res bytes.Buffer
 	var wg sync.WaitGroup
 	var cc sync.Map
+	var total int
 
 	n, err := strconv.Atoi(arg[0])
 
@@ -145,6 +148,8 @@ func smpCmd(console *shell.Interface, arg []string) (string, error) {
 	}
 
 	fmt.Fprintf(console.Output, "%d cores detected, launching %d goroutines from CPU%2d\n", ncpu, n, goos.ProcID())
+
+	start := time.Now()
 
 	for i := 0; i < n; i++ {
 		wg.Go(func() {
@@ -161,9 +166,9 @@ func smpCmd(console *shell.Interface, arg []string) (string, error) {
 			}
 		})
 	}
-	wg.Wait()
 
-	var total int
+	wg.Wait()
+	elapsed := time.Since(start)
 
 	cc.Range(func(cpu any, count any) bool {
 		total += count.(int)
@@ -171,7 +176,7 @@ func smpCmd(console *shell.Interface, arg []string) (string, error) {
 		return true
 	})
 
-	fmt.Fprintf(&res, "Total %3d\n", total)
+	fmt.Fprintf(&res, "Total %3d (%v)\n", total, elapsed)
 
 	return res.String(), nil
 }
@@ -203,7 +208,7 @@ func rebootCmd(_ *shell.Interface, _ []string) (_ string, err error) {
 }
 
 func cryptoTest() {
-	spawn(btcdTest)
+	spawn(btcTest)
 	spawn(kemTest)
 }
 

@@ -7,7 +7,7 @@ SHELL = /usr/bin/env bash
 
 APP := example
 TARGET ?= usbarmory
-TEXT_START := 0x80010000 # ramStart (defined in mem.go under relevant tamago/soc package) + 0x10000
+STACK ?= gvisor
 TAGS := $(TARGET)
 TAMAGO ?= $(shell go tool -n github.com/usbarmory/tamago/cmd/tamago)
 GOOSPKG ?= github.com/usbarmory/tamago
@@ -15,7 +15,7 @@ GOOSPKG ?= github.com/usbarmory/tamago
 ifeq ($(TARGET),$(filter $(TARGET), microvm gcp))
 
 SMP ?= $(shell nproc)
-TEXT_START := 0x10010000 # ramStart (defined in mem.go under tamago/amd64 package) + 0x10000
+TEXT_START := 0x10010000 # ramStart (defined in mem.go under tamago amd64 package) + 0x10000
 GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=amd64
 
 ifeq ($(TARGET),microvm)
@@ -57,15 +57,23 @@ endif
 endif
 
 ifeq ($(TARGET),$(filter $(TARGET), firecracker cloud_hypervisor))
-TEXT_START := 0x10010000 # ramStart (defined in mem.go under tamago/amd64 package) + 0x10000
+TEXT_START := 0x10010000 # ramStart (defined in mem.go under tamago amd64 package) + 0x10000
 GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=amd64
 endif
 
 ifeq ($(TARGET),sifive_u)
+TEXT_START := 0x80010000 # ramStart (defined in mem.go under tamago fu540 package) + 0x10000
 GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=riscv64
 QEMU ?= qemu-system-riscv64 -machine sifive_u -m 512M \
         -nographic -monitor none -semihosting -serial stdio -net none \
         -dtb $(CURDIR)/qemu.dtb -bios $(CURDIR)/tools/bios.bin
+endif
+
+ifeq ($(TARGET),virt_loong64)
+TEXT_START := 0x1000000 # ramStart (defined in mem.go under tamago ls3a5000 package) + 0x10000
+GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=loong64
+QEMU ?= qemu-system-loongarch64 -machine virt -m 256M \
+        -nographic -monitor none -serial stdio -net none
 endif
 
 ifeq ($(TARGET),$(filter $(TARGET), imx8mpevk mx6ullevk))
@@ -76,18 +84,18 @@ NET   ?= nic,model=imx.enet,netdev=net0 -netdev user,id=net0,net=10.0.0.0/24,hos
 else
 NET   ?= nic,model=imx.enet,netdev=net0 -netdev tap,id=net0,ifname=tap0,script=no,downscript=no
 endif
-TAGS  := $(TARGET),linkramsize
+TAGS  := $(TAGS),linkramsize
 endif
 
 ifeq ($(TARGET),usbarmory)
 UART1 := null
 UART2 := stdio
 NET   := none
-TAGS  := $(TARGET),linkramsize
+TAGS  := $(TAGS),linkramsize
 endif
 
 ifeq ($(TARGET),imx8mpevk)
-TEXT_START := 0x40010000 # ramStart (defined in mem.go under tamago/soc package) + 0x10000
+TEXT_START := 0x40010000 # ramStart (defined in mem.go under tamago imx8mp package) + 0x10000
 GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=arm64
 QEMU ?= qemu-system-aarch64 -machine imx8mp-evk -m 512M -smp 1 \
         -nographic -monitor none -semihosting \
@@ -95,13 +103,14 @@ QEMU ?= qemu-system-aarch64 -machine imx8mp-evk -m 512M -smp 1 \
 endif
 
 ifeq ($(TARGET), $(filter $(TARGET), mx6ullevk usbarmory))
+TEXT_START := 0x80010000 # ramStart (defined in mem.go under tamago imx6ul package) + 0x10000
 GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARM=7 GOARCH=arm
 QEMU ?= qemu-system-arm -machine mcimx6ul-evk -cpu cortex-a7 -m 512M \
         -nographic -monitor none -semihosting \
         -serial $(UART1) -serial $(UART2) -net $(NET)
 endif
 
-GOFLAGS := -tags ${TAGS},native -trimpath -ldflags "-T $(TEXT_START) -R 0x1000"
+GOFLAGS := -tags ${TAGS},${STACK},native -trimpath -ldflags "-T $(TEXT_START) -R 0x1000"
 
 .PHONY: clean qemu qemu-gdb
 
@@ -155,8 +164,9 @@ $(APP): check_tamago
 img: $(APP).img
 
 $(APP).bin: $(APP)
-	objcopy -j .text -j .rodata -j .shstrtab -j .typelink \
-	    -j .itablink -j .gopclntab -j .go.buildinfo -j .go.module -j .noptrdata -j .data \
+	objcopy -j .text -j .rodata -j .shstrtab -j .typelink -j .itablink \
+	    -j .gopclntab -j .go.type -j .go.func -j .go.buildinfo -j go.fipsinfo -j .go.module \
+	    -j .noptrdata -j .data \
 	    -j .bss --set-section-flags .bss=alloc,load,contents \
 	    -j .noptrbss --set-section-flags .noptrbss=alloc,load,contents \
 	    $(APP) -O binary $(APP).bin
@@ -195,8 +205,9 @@ check_hab_keys:
 
 $(APP).bin: CROSS_COMPILE=arm-none-eabi-
 $(APP).bin: $(APP)
-	$(CROSS_COMPILE)objcopy -j .text -j .rodata -j .shstrtab -j .typelink \
-	    -j .itablink -j .gopclntab -j .go.buildinfo -j .go.module -j .noptrdata -j .data \
+	$(CROSS_COMPILE)objcopy -j .text -j .rodata -j .shstrtab -j .typelink -j .itablink \
+	    -j .gopclntab -j .go.type -j .go.func -j .go.buildinfo -j go.fipsinfo -j .go.module \
+	    -j .noptrdata -j .data \
 	    -j .bss --set-section-flags .bss=alloc,load,contents \
 	    -j .noptrbss --set-section-flags .noptrbss=alloc,load,contents \
 	    $(APP) -O binary $(APP).bin
@@ -262,9 +273,16 @@ IMX8MP.yaml:
 	${TAMAGO} mod download $(CRUCIBLE_PKG)
 	cp -f $(GOMODCACHE)/$(CRUCIBLE_PKG)/cmd/crucible/fusemaps/IMX8MP.yaml cmd/IMX8MP.yaml
 
+#### LOONG64 targets ####
+
+ifeq ($(TARGET),virt_loong64)
+$(APP): check_tamago
+	$(GOENV) $(TAMAGO) build $(GOFLAGS) -o ${APP}
+endif
+
 #### RISCV64 targets ####
 
-ifeq ($(TARGET),$(filter $(TARGET), sifive_u))
+ifeq ($(TARGET),sifive_u)
 
 qemu.dtb: GOMODCACHE=$(shell ${TAMAGO} env GOMODCACHE)
 qemu.dtb: TAMAGO_PKG=$(shell ${TAMAGO} list -m -f '{{.Path}}@{{.Version}}' github.com/usbarmory/tamago)
@@ -275,7 +293,7 @@ qemu.dtb:
 
 $(APP): check_tamago qemu.dtb
 	$(GOENV) $(TAMAGO) build $(GOFLAGS) -o ${APP} && \
-	RT0=$$(nm $(APP)|grep _rt0_riscv64_tamago | cut -d' ' -f1) && \
+	RT0=$$(readelf -a $(APP)|grep -i 'Entry point' | cut -dx -f2) && \
 	echo ".equ RT0_RISCV64_TAMAGO, 0x$$RT0" > $(CURDIR)/tools/bios.cfg && \
 	cd $(CURDIR)/tools && ./build_riscv64_bios.sh
 

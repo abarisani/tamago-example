@@ -78,9 +78,15 @@ func miiCmd(_ *shell.Interface, arg []string) (res string, err error) {
 			return "", fmt.Errorf("invalid data, %v", err)
 		}
 
-		NIC.WritePHYRegister(int(pa), int(ra), uint16(data))
+		err = NIC.WritePHYRegister(int(pa), int(ra), uint16(data))
 	} else {
-		res = fmt.Sprintf("%#x", NIC.ReadPHYRegister(int(pa), int(ra)))
+		data, err := NIC.ReadPHYRegister(int(pa), int(ra))
+
+		if err != nil {
+			return "", fmt.Errorf("invalid read, %v", err)
+		}
+
+		res = fmt.Sprintf("%#x", data)
 	}
 
 	return
@@ -126,7 +132,13 @@ func mmdCmd(_ *shell.Interface, arg []string) (res string, err error) {
 
 		NIC.WritePHYRegister(int(pa), ADDAR, uint16(data))
 	} else {
-		res = fmt.Sprintf("%#x", NIC.ReadPHYRegister(int(pa), ADDAR))
+		data, err := NIC.ReadPHYRegister(int(pa), ADDAR)
+
+		if err != nil {
+			return "", fmt.Errorf("invalid read, %v", err)
+		}
+
+		res = fmt.Sprintf("%#x", data)
 	}
 
 	return

@@ -10,7 +10,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"runtime"
 
 	"github.com/usbarmory/tamago-example/cmd"
 	"github.com/usbarmory/tamago-example/internal/semihosting"
@@ -26,23 +25,23 @@ func main() {
 
 	name, _ := cmd.Target()
 
-	banner := fmt.Sprintf("%s/%s (%s) • %s",
-		runtime.GOOS, runtime.GOARCH, runtime.Version(), name)
+	network.Banner += fmt.Sprintf(" • %s", name)
 
-	console := &shell.Interface{
-		Banner: banner,
-		Log:    logFile,
+	newConsole := func() *shell.Interface {
+		return &shell.Interface{
+			Banner:     network.Banner,
+			ReadWriter: cmd.Terminal,
+		}
 	}
 
 	if hasUSB, hasEth := cmd.HasNetwork(); hasUSB || hasEth {
-		network.SetupStaticWebAssets(banner)
-		network.Init(console, hasUSB, hasEth, &cmd.NIC)
+		if err := network.Init(newConsole, hasUSB, hasEth, &cmd.NIC); err != nil {
+			log.Print(err)
+		}
+	} else {
+		console := newConsole()
+		console.Start(true)
 	}
 
-	console.ReadWriter = cmd.Terminal
-	console.Start(true)
-
-	if runtime.GOARCH != "amd64" {
-		semihosting.Exit()
-	}
+	semihosting.Exit()
 }

@@ -8,23 +8,20 @@
 package network
 
 import (
-	"log"
+	"fmt"
 
-	"github.com/usbarmory/tamago-example/shell"
 	"github.com/usbarmory/tamago/board/google/gcp"
 	"github.com/usbarmory/tamago/kvm/virtio"
 	"github.com/usbarmory/tamago/soc/intel/pci"
-	"github.com/usbarmory/virtio-net"
+
+	"github.com/usbarmory/go-net"
+	"github.com/usbarmory/go-net/virtio"
 )
 
 // chosen by the application for MSI-X signaling
 const VIRTIO_NET0_IRQ = 32
 
-func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **vnet.Net) {
-	if hasUSB {
-		log.Fatalf("unsupported")
-	}
-
+func Init(newConsole newShellFn, _ bool, _ bool, nic **vnet.Net) (err error) {
 	transport := &virtio.LegacyPCI{
 		Device: pci.Probe(
 			0,
@@ -37,6 +34,7 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **vnet.Net) {
 		Transport:    transport,
 		IRQ:          VIRTIO_NET0_IRQ,
 		HeaderLength: 10,
+		MTU:          gnet.MTU,
 	}
 
 	// Google Virtual Private Cloud (GCP) - europe-west1
@@ -46,20 +44,24 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **vnet.Net) {
 
 	*nic = dev
 
-	if err := startNet(console, dev); err != nil {
-		log.Printf("could not start networking, %v", err)
-		return
+	if err := dev.Init(); err != nil {
+		return fmt.Errorf("could not initialize VirtIO device, %v", err)
 	}
 
-	// This example illustrates IRQ handling, alternatively a poller can be
-	// used with `dev.Start(true)`.
+	iface, err := initStack(newConsole, dev, true)
+
+	if err != nil {
+		return fmt.Errorf("could not start network stack, %v", err)
+	}
+
 	go func() {
-		// On GCP we must ensure the ISR is running before starting the
-		// interface.
+		// ensure ISR is running before starting the interface
 		gcp.AMD64.ClearInterrupt()
-		dev.Start(false)
+		dev.Start()
 	}()
 
 	transport.EnableInterrupt(VIRTIO_NET0_IRQ, vnet.ReceiveQueue)
-	startInterruptHandler(dev, gcp.AMD64, gcp.IOAPIC0)
+	startInterruptHandler(dev, iface, gcp.AMD64, gcp.IOAPIC0)
+
+	return
 }

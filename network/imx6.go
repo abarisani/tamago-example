@@ -8,7 +8,9 @@
 package network
 
 import (
+	"fmt"
 	"log"
+	"net"
 	"runtime/goos"
 
 	"github.com/usbarmory/tamago/arm"
@@ -17,23 +19,38 @@ import (
 	"github.com/usbarmory/tamago/soc/nxp/usb"
 
 	"github.com/usbarmory/tamago/board/usbarmory/mk2"
-	"github.com/usbarmory/tamago-example/shell"
+
+	"github.com/usbarmory/go-net"
 )
 
-func startInterruptHandler(usb *usb.USB, eth *enet.ENET) {
-	imx6ul.GIC.Init(true, false)
-	imx6ul.GIC.EnableInterrupt(arm.TIMER_IRQ, true)
+func handleEthernetInterrupt(eth *enet.ENET, iface *gnet.Interface, buf []byte) {
+	for {
+		if n, err := eth.Receive(buf); err != nil || n == 0 {
+			return
+		}
+
+		iface.Stack.RecvInboundPacket(buf)
+		eth.ClearInterrupt(enet.IRQ_RXF)
+	}
+}
+
+func startInterruptHandler(usb *usb.USB, eth *enet.ENET, iface *gnet.Interface) {
+	var buf []byte
+
+	imx6ul.GIC.Init()
+	imx6ul.GIC.EnableInterrupt(arm.TIMER_IRQ)
 
 	if usb != nil {
-		imx6ul.GIC.EnableInterrupt(usb.IRQ, true)
+		imx6ul.GIC.EnableInterrupt(usb.IRQ)
 	}
 
 	if eth != nil {
-		imx6ul.GIC.EnableInterrupt(eth.IRQ, true)
+		buf = make([]byte, gnet.EthernetMaximumSize+gnet.MTU)
+		imx6ul.GIC.EnableInterrupt(eth.IRQ)
 	}
 
 	isr := func() {
-		irq := imx6ul.GIC.GetInterrupt(true)
+		irq := imx6ul.GIC.GetInterrupt()
 
 		switch {
 		case irq == arm.TIMER_IRQ:
@@ -41,7 +58,7 @@ func startInterruptHandler(usb *usb.USB, eth *enet.ENET) {
 		case usb != nil && irq == usb.IRQ:
 			handleUSBInterrupt(usb)
 		case eth != nil && irq == eth.IRQ:
-			handleEthernetInterrupt(eth)
+			handleEthernetInterrupt(eth, iface, buf)
 		default:
 			log.Printf("internal error, unexpected IRQ %d", irq)
 		}
@@ -55,19 +72,35 @@ func startInterruptHandler(usb *usb.USB, eth *enet.ENET) {
 
 		mk2.LED("blue", false)
 		imx6ul.ARM.SetAlarm(pollUntil)
-		imx6ul.ARM.WaitInterrupt()
+		imx6ul.ARM.Idle()
 		mk2.LED("blue", true)
 	}
 
-	arm.ServiceInterrupts(isr)
+	imx6ul.ARM.ServiceInterrupts(isr)
 }
 
-func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **enet.ENET) {
+func Init(newConsole newShellFn, hasUSB bool, hasEth bool, nic **enet.ENET) (err error) {
 	var usb *usb.USB
 	var eth *enet.ENET
+	var iface *gnet.Interface
 
 	if hasUSB {
-		usb = startUSB(console)
+		usb = imx6ul.USB1
+
+		if iface, err = initStack(newConsole, nil, !hasEth); err != nil {
+			return fmt.Errorf("could not start network stack, %v", err)
+		}
+
+		if err = initEthernetOverUSB(usb, iface.Stack); err != nil {
+			return fmt.Errorf("could not initialize Ethernet over USB, %v", err)
+		}
+
+		// With both USB and Ethernet available each port gets its own
+		// separate stack, Go runtime network is kept on the latter.
+		if hasEth {
+			l, _ := iface.Stack.(*gnet.GVisorStack).ListenerTCP4(22)
+			StartSSHServer(l, newConsole)
+		}
 	}
 
 	if hasEth {
@@ -77,9 +110,22 @@ func Init(console *shell.Interface, hasUSB bool, hasEth bool, nic **enet.ENET) {
 			eth = imx6ul.ENET1
 		}
 
-		startEth(eth, console, true)
 		*nic = eth
+		eth.MAC, _ = net.ParseMAC(MAC)
+
+		if err = eth.Init(); err != nil {
+			return fmt.Errorf("could not initialize Ethernet, %v", err)
+		}
+
+		if iface, err = initStack(newConsole, eth, true); err != nil {
+			return fmt.Errorf("could not start network stack, %v", err)
+		}
+
+		eth.Start()
+		eth.EnableInterrupt(enet.IRQ_RXF)
 	}
 
-	startInterruptHandler(usb, eth)
+	startInterruptHandler(usb, eth, iface)
+
+	return
 }

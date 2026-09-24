@@ -16,11 +16,13 @@ import (
 	"time"
 
 	f_note "github.com/transparency-dev/formats/note"
-	"github.com/transparency-dev/witness/monitoring"
-	"github.com/transparency-dev/witness/monitoring/prometheus"
 	"github.com/transparency-dev/witness/omniwitness"
 
 	"golang.org/x/mod/sumdb/note"
+
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/prometheus"
+	"go.opentelemetry.io/otel/sdk/metric"
 
 	"github.com/usbarmory/tamago-example/shell"
 )
@@ -129,15 +131,18 @@ func witnessCmd(_ *shell.Interface, arg []string) (res string, err error) {
 		return "", fmt.Errorf("failed to listen on port %d, %v", witnessPort, err)
 	}
 
-	mf := prometheus.MetricFactory{
-		Prefix: "omniwitness_",
+	exporter, err := prometheus.New(prometheus.WithNamespace("omniwitness"))
+
+	if err != nil {
+		return "", fmt.Errorf("failed to create prometheus exporter: %v", err)
 	}
-	monitoring.SetMetricFactory(mf)
+
+	provider := metric.NewMeterProvider(metric.WithReader(exporter))
+	otel.SetMeterProvider(provider)
 
 	opConfig := omniwitness.OperatorConfig{
 		WitnessKeys:     []note.Signer{signer},
 		WitnessVerifier: signer.Verifier(),
-		FeedInterval:    30 * time.Second,
 	}
 
 	client := &http.Client{

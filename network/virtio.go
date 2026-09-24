@@ -8,22 +8,21 @@
 package network
 
 import (
-	"fmt"
 	"log"
-	"net"
 	"runtime/goos"
 
 	"github.com/usbarmory/tamago/amd64"
 	"github.com/usbarmory/tamago/soc/intel/ioapic"
-	"github.com/usbarmory/tamago-example/shell"
-	"github.com/usbarmory/virtio-net"
+
+	"github.com/usbarmory/go-net"
+	"github.com/usbarmory/go-net/virtio"
 )
 
 // redirection vector for IOAPIC IRQ to CPU IRQ
 const vector = 32
 
-func startInterruptHandler(dev *vnet.Net, cpu *amd64.CPU, ioapic *ioapic.IOAPIC) {
-	if dev == nil {
+func startInterruptHandler(dev *vnet.Net, iface *gnet.Interface, cpu *amd64.CPU, ioapic *ioapic.IOAPIC) {
+	if dev == nil || iface == nil {
 		return
 	}
 
@@ -35,11 +34,20 @@ func startInterruptHandler(dev *vnet.Net, cpu *amd64.CPU, ioapic *ioapic.IOAPIC)
 		ioapic.EnableInterrupt(dev.IRQ, vector)
 	}
 
+	// as IRQs are enabled, favor slicing dev.ReceiveWithHeader, opposed to
+	// dev.Receive for better performance
+	size := dev.HeaderLength + gnet.EthernetMaximumSize + gnet.MTU
+	buf := make([]byte, size)
+
 	isr := func(irq int) {
 		switch irq {
 		case vector:
-			for buf := dev.Rx(); buf != nil; buf = dev.Rx() {
-				dev.RxHandler(buf)
+			for {
+				if n, err := dev.ReceiveWithHeader(buf); err != nil || n == 0 {
+					return
+				}
+
+				iface.Stack.RecvInboundPacket(buf[dev.HeaderLength:])
 			}
 		default:
 			log.Printf("internal error, unexpected IRQ %d", irq)
@@ -48,54 +56,13 @@ func startInterruptHandler(dev *vnet.Net, cpu *amd64.CPU, ioapic *ioapic.IOAPIC)
 
 	// optimize CPU idle management as IRQs are enabled
 	goos.Idle = func(pollUntil int64) {
-		if pollUntil == 0 {
-			return
+		if pollUntil > 0 {
+			cpu.SetAlarm(pollUntil)
 		}
 
-		cpu.SetAlarm(pollUntil)
 		cpu.WaitInterrupt()
 		cpu.SetAlarm(0)
 	}
 
 	cpu.ServiceInterrupts(isr)
-}
-
-func startNet(console *shell.Interface, dev *vnet.Net) (err error) {
-	iface := vnet.Interface{}
-
-	if err := iface.Init(dev, IP, Netmask, Gateway); err != nil {
-		return fmt.Errorf("could not initialize VirtIO networking, %v", err)
-	}
-
-	iface.EnableICMP()
-
-	if console != nil {
-		listenerSSH, err := iface.ListenerTCP4(22)
-
-		if err != nil {
-			return fmt.Errorf("could not initialize SSH listener, %v", err)
-		}
-
-		StartSSHServer(listenerSSH, console)
-	}
-
-	listenerHTTP, err := iface.ListenerTCP4(80)
-
-	if err != nil {
-		return fmt.Errorf("could not initialize HTTP listener, %v", err)
-	}
-
-	listenerHTTPS, err := iface.ListenerTCP4(443)
-
-	if err != nil {
-		return fmt.Errorf("could not initialize HTTP listener, %v", err)
-	}
-
-	StartWebServer(listenerHTTP, IP, 80, false)
-	StartWebServer(listenerHTTPS, IP, 443, true)
-
-	// hook interface into Go runtime
-	net.SocketFunc = iface.Socket
-
-	return
 }
