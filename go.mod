@@ -22,7 +22,7 @@ require (
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/go-net v0.0.0-20260924083839-356cbf14db9e
 	github.com/usbarmory/rpmb v0.0.0-20260903082741-fa6a72563433
-	github.com/usbarmory/tamago v1.27.2-0.20260923104811-857b3fbd9abe
+	github.com/usbarmory/tamago v1.27.2-0.20260924095414-7766012a59e8
 	go.opentelemetry.io/otel v1.46.0
 	go.opentelemetry.io/otel/exporters/prometheus v0.68.0
 	go.opentelemetry.io/otel/sdk/metric v1.46.0
