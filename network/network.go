@@ -28,11 +28,11 @@ import (
 // configuration and stack.
 var (
 	Banner   = fmt.Sprintf("%s/%s (%s)", runtime.GOOS, runtime.GOARCH, runtime.Version())
-	MAC      = "1a:55:89:a2:69:41"
+	MAC      = "1a:55:89:a2:69:42"
 	Netmask  = "255.255.255.0"
 	CIDR     = "/24"
-	IP       = "10.0.0.1"
-	Gateway  = "10.0.0.2"
+	IP       = "10.1.7.200"
+	Gateway  = "10.1.7.100"
 	Resolver = "8.8.8.8:53"
 )
 
