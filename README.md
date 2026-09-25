@@ -124,6 +124,7 @@ test                                                             # launch tests
 top             top <samples>                                    # show CPU usage
 uptime                                                           # show system running time
 usdhc           <n> <hex addr> <size>                            # SD/MMC card read
+witness                                                          # start/inspect sigsum monitor
 wormhole        (send <path>|recv <code>)                        # transfer file through magic wormhole
 ```
 

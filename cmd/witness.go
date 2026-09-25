@@ -39,10 +39,6 @@ func (_ callbacks) NewTreeHead(logKeyHash crypto.Hash, signedTreeHead types.Sign
 
 func (_ callbacks) NewLeaves(logKeyHash crypto.Hash, numberOfProcessedLeaves uint64, indices []uint64, leaves []types.Leaf) {
 	wlog.Printf("new %x leaves, count %d, total processed %d", logKeyHash, len(leaves), numberOfProcessedLeaves)
-
-	for i, l := range leaves {
-		wlog.Printf("index %d keyhash %x checksum %x\n", indices[i], l.KeyHash, l.Checksum)
-	}
 }
 
 func (_ callbacks) Alert(logKeyHash crypto.Hash, e error) {
@@ -65,7 +61,7 @@ func witnessCmd(_ *shell.Interface, arg []string) (res string, err error) {
 	if wlogFile, err = os.OpenFile(wlogPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); err != nil {
 		return
 	}
-	wlog.SetOutput(wlogFile)
+	wlog = log.New(wlogFile, "", 0)
 
 	pub, _, err := crypto.NewKeyPair()
 
