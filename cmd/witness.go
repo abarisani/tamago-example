@@ -7,157 +7,85 @@ package cmd
 
 import (
 	"context"
-	"crypto/rand"
 	"fmt"
 	"log"
-	"net"
-	"net/http"
-	"sync"
+	"os"
 	"time"
 
-	f_note "github.com/transparency-dev/formats/note"
-	"github.com/transparency-dev/witness/omniwitness"
-
-	"golang.org/x/mod/sumdb/note"
-
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/prometheus"
-	"go.opentelemetry.io/otel/sdk/metric"
+	"sigsum.org/sigsum-go/pkg/crypto"
+	"sigsum.org/sigsum-go/pkg/monitor"
+	"sigsum.org/sigsum-go/pkg/policy"
+	"sigsum.org/sigsum-go/pkg/types"
 
 	"github.com/usbarmory/tamago-example/shell"
 )
 
 const (
-	witnessName = "tamago-example-ephemeral-witness"
-	witnessPort = 8080
+	policyName    = "sigsum-test1-2025"
+	queryInterval = 60 * time.Second
 )
+
+var (
+	wlogPath = "/witness.log"
+	wlog     *log.Logger
+	wlogFile *os.File
+)
+
+type callbacks struct{}
+
+func (_ callbacks) NewTreeHead(logKeyHash crypto.Hash, signedTreeHead types.SignedTreeHead) {
+	wlog.Printf("new %x tree, size %d", logKeyHash, signedTreeHead.Size)
+}
+
+func (_ callbacks) NewLeaves(logKeyHash crypto.Hash, numberOfProcessedLeaves uint64, indices []uint64, leaves []types.Leaf) {
+	wlog.Printf("new %x leaves, count %d, total processed %d", logKeyHash, len(leaves), numberOfProcessedLeaves)
+
+	for i, l := range leaves {
+		wlog.Printf("index %d keyhash %x checksum %x\n", indices[i], l.KeyHash, l.Checksum)
+	}
+}
+
+func (_ callbacks) Alert(logKeyHash crypto.Hash, e error) {
+	wlog.Printf("alert log %x, %v", logKeyHash, e)
+}
 
 func init() {
 	shell.Add(shell.Cmd{
 		Name: "witness",
-		Help: "start/inspect transparency.dev omniwitness",
+		Help: "start/inspect sigsum monitor",
 		Fn:   witnessCmd,
 	})
 }
 
-// NewPersistence returns a persistence object that lives only in memory.
-func NewPersistence() *inMemoryPersistence {
-	return &inMemoryPersistence{
-		checkpoints: make(map[string][]byte),
-	}
-}
-
-type inMemoryPersistence struct {
-	// mu allows checkpoints to be read concurrently, but
-	// exclusively locked for writing.
-	mu          sync.RWMutex
-	checkpoints map[string][]byte
-}
-
-func (p *inMemoryPersistence) Init(_ context.Context) error {
-	return nil
-}
-
-func (p *inMemoryPersistence) Logs() ([]string, error) {
-	p.mu.RLock()
-	defer p.mu.RUnlock()
-	res := make([]string, 0, len(p.checkpoints))
-	for k := range p.checkpoints {
-		res = append(res, k)
-	}
-	return res, nil
-}
-
-func (p *inMemoryPersistence) Latest(_ context.Context, logID string) ([]byte, error) {
-	p.mu.RLock()
-	defer p.mu.RUnlock()
-	return p.checkpoints[logID], nil
-}
-
-func (p *inMemoryPersistence) Update(_ context.Context, logID string, f func([]byte) ([]byte, error)) error {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	u, err := f(p.checkpoints[logID])
-	if err != nil {
-		return err
-	}
-
-	p.checkpoints[logID] = u
-	return nil
-}
-
-var witnessLogs *inMemoryPersistence
-
-func dumpWitnessLogs() (s string, err error) {
-	logs, err := witnessLogs.Logs()
-
-	if err != nil {
-		return "", fmt.Errorf("failed to get log list, %v", err)
-	}
-
-	for _, logID := range logs {
-		chkpt, err := witnessLogs.Latest(nil, logID)
-
-		if err != nil {
-			return "", fmt.Errorf("failed to get latest checkpoint, %v", err)
-		}
-
-		s += string(chkpt)
-	}
-
-	return
-}
-
 func witnessCmd(_ *shell.Interface, arg []string) (res string, err error) {
-	if witnessLogs != nil {
-		return dumpWitnessLogs()
+	if wlog != nil {
+		return catCmd(nil, []string{wlogPath})
 	}
 
-	sec, pub, err := note.GenerateKey(rand.Reader, string(witnessName))
+	if wlogFile, err = os.OpenFile(wlogPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); err != nil {
+		return
+	}
+	wlog.SetOutput(wlogFile)
+
+	pub, _, err := crypto.NewKeyPair()
 
 	if err != nil {
-		return "", fmt.Errorf("failed to generate derived note key, %v", err)
+		return "", fmt.Errorf("failed to generate key pair, %v", err)
 	}
 
-	signer, err := f_note.NewSignerForCosignatureV1(sec)
+	config := monitor.Config{
+		QueryInterval: queryInterval,
+		Callbacks:     callbacks{},
+	}
+
+	policy, err := policy.ByName(policyName)
 
 	if err != nil {
-		return "", fmt.Errorf("failed to create note signer, %v", err)
+		return "", fmt.Errorf("failed to load policy %s, %v", policyName, err)
 	}
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", witnessPort))
-
-	if err != nil {
-		return "", fmt.Errorf("failed to listen on port %d, %v", witnessPort, err)
-	}
-
-	exporter, err := prometheus.New(prometheus.WithNamespace("omniwitness"))
-
-	if err != nil {
-		return "", fmt.Errorf("failed to create prometheus exporter: %v", err)
-	}
-
-	provider := metric.NewMeterProvider(metric.WithReader(exporter))
-	otel.SetMeterProvider(provider)
-
-	opConfig := omniwitness.OperatorConfig{
-		WitnessKeys:     []note.Signer{signer},
-		WitnessVerifier: signer.Verifier(),
-	}
-
-	client := &http.Client{
-		Timeout: 10 * time.Second,
-	}
-
-	witnessLogs = NewPersistence()
-
-	log.Printf("starting omniwitness on :%d (%s)", witnessPort, pub)
-
-	go func() {
-		if err = omniwitness.Main(context.Background(), opConfig, witnessLogs, listener, client); err != nil {
-			log.Printf("omniwitness error, %v", err)
-		}
-	}()
+	log.Printf("starting sigsum monitor (%x)", pub)
+	monitor.StartMonitoring(context.TODO(), policy, &config, nil)
 
 	return
 }
