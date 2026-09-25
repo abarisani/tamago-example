@@ -61,7 +61,7 @@ func witnessCmd(_ *shell.Interface, arg []string) (res string, err error) {
 	if wlogFile, err = os.OpenFile(wlogPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); err != nil {
 		return
 	}
-	wlog = log.New(wlogFile, "", 0)
+	wlog = log.New(wlogFile, "", log.LstdFlags)
 
 	pub, _, err := crypto.NewKeyPair()
 
