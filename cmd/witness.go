@@ -34,15 +34,15 @@ var (
 type callbacks struct{}
 
 func (_ callbacks) NewTreeHead(logKeyHash crypto.Hash, signedTreeHead types.SignedTreeHead) {
-	wlog.Printf("new %x tree, size %d", logKeyHash, signedTreeHead.Size)
+	wlog.Printf("%x tree, size %d", logKeyHash, signedTreeHead.Size)
 }
 
 func (_ callbacks) NewLeaves(logKeyHash crypto.Hash, numberOfProcessedLeaves uint64, indices []uint64, leaves []types.Leaf) {
-	wlog.Printf("new %x leaves, count %d, total processed %d", logKeyHash, len(leaves), numberOfProcessedLeaves)
+	wlog.Printf("%x leaves, count %d, total processed %d", logKeyHash, len(leaves), numberOfProcessedLeaves)
 }
 
 func (_ callbacks) Alert(logKeyHash crypto.Hash, e error) {
-	wlog.Printf("alert log %x, %v", logKeyHash, e)
+	wlog.Printf("%x alert, %v", logKeyHash, e)
 }
 
 func init() {
