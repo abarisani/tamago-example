@@ -26,7 +26,6 @@ import (
 	"github.com/usbarmory/tamago/amd64"
 	"github.com/usbarmory/tamago/board/qemu/microvm"
 	"github.com/usbarmory/tamago/mem"
-	"github.com/usbarmory/tamago/goos"
 
 	"github.com/usbarmory/tamago-example/shell"
 )
@@ -42,15 +41,14 @@ const (
 	probability = 0.95
 )
 
-//go:linkname moveHeap internal/runtime/goospkg.InitHW0
-func moveHeap() {
-	microvm.AMD64.ConfigurePDPT(ramStart, ramStart + ramSize, amd64.MemoryRegion)
+//go:linkname inithw0 internal/runtime/goospkg.InitHW0
+func inithw0() {
+	microvm.AMD64.ConfigurePDPT(
+		ramStart,
+		ramStart + ramSize,
+		amd64.MemoryRegion)
 
-	mem.RamStart = ramStart
-	mem.RamSize = ramSize
-
-	goos.Bloc = uintptr(mem.RamStart)
-	goos.BlocMax = uintptr(mem.RamStart + mem.RamSize)
+	mem.Init(ramStart, ramStart + ramSize)
 }
 
 var (
