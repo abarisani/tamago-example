@@ -2,8 +2,6 @@ module github.com/usbarmory/tamago-example
 
 go 1.27.1
 
-tool github.com/usbarmory/tamago/cmd/tamago
-
 require (
 	github.com/Harvey-OS/ninep v0.0.0-20200724082702-d30a6d4f9789
 	github.com/arl/statsviz v0.8.2
@@ -13,6 +11,7 @@ require (
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.2.0
 	github.com/dustinxie/ecc v0.0.0-20210511000915-959544187564
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
+	github.com/jxsl13/goai v0.1.0
 	github.com/psanford/wormhole-william v1.0.8
 	github.com/traefik/yaegi v0.16.1
 	github.com/u-root/u-root v0.16.0
@@ -20,12 +19,12 @@ require (
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/go-net v0.0.0-20260924083839-356cbf14db9e
 	github.com/usbarmory/rpmb v0.0.0-20260903082741-fa6a72563433
-	github.com/usbarmory/tamago v1.27.2-0.20260924095414-7766012a59e8
+	github.com/usbarmory/tamago v1.27.2-0.20260923104811-857b3fbd9abe
 	golang.org/x/crypto v0.57.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260921070245-7a4a4d6beae2
 	golang.org/x/term v0.46.0
 	sigsum.org/sigsum-go v0.14.1
-	tailscale.com v1.102.4
+	tailscale.com v1.102.5
 )
 
 require (
@@ -57,7 +56,6 @@ require (
 	github.com/mitchellh/go-ps v1.0.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.26 // indirect
 	github.com/pires/go-proxyproto v0.8.1 // indirect
-	github.com/prometheus/common v0.70.1 // indirect
 	github.com/safchain/ethtool v0.3.0 // indirect
 	github.com/soypat/lneto v0.3.2 // indirect
 	github.com/tailscale/certstore v0.1.1-0.20260409135935-3638fb84b77d // indirect
@@ -81,8 +79,6 @@ require (
 	golang.org/x/time v0.15.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 	golang.zx2c4.com/wireguard/windows v0.5.3 // indirect
-	google.golang.org/protobuf v1.36.12 // indirect
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gvisor.dev/gvisor v0.0.0-20260224225140-573d5e7127a8 // indirect
 	nhooyr.io/websocket v1.8.17 // indirect

@@ -16,15 +16,16 @@ ifeq ($(TARGET),$(filter $(TARGET), microvm gcp))
 
 SMP ?= $(shell nproc)
 TEXT_START := 0x10010000 # ramStart (defined in mem.go under tamago amd64 package) + 0x10000
-GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=amd64
+GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=amd64 GOEXPERIMENT=simd
 
 ifeq ($(TARGET),microvm)
 
+TAGS := $(TAGS),linkhwinit0
 QEMU ?= qemu-system-x86_64 -machine microvm,x-option-roms=on,pit=off,pic=off,rtc=on \
         -smp $(SMP) \
         -global virtio-mmio.force-legacy=false \
         -enable-kvm -cpu host,invtsc=on,kvmclock=on -no-reboot \
-        -m 4G -nographic -monitor none -serial stdio \
+        -m 8G -nographic -monitor none -serial stdio \
         -device virtio-net-device,netdev=net0 -netdev tap,id=net0,ifname=tap0,script=no,downscript=no
 
 endif
@@ -110,7 +111,7 @@ QEMU ?= qemu-system-arm -machine mcimx6ul-evk -cpu cortex-a7 -m 512M \
         -serial $(UART1) -serial $(UART2) -net $(NET)
 endif
 
-GOFLAGS := -tags ${TAGS},${STACK},native -trimpath -ldflags "-T $(TEXT_START) -R 0x1000"
+GOFLAGS := -tags ${TAGS},${STACK},native -trimpath -ldflags "-s -w -T $(TEXT_START) -R 0x1000"
 
 .PHONY: clean qemu qemu-gdb
 
@@ -164,11 +165,9 @@ $(APP): check_tamago
 img: $(APP).img
 
 $(APP).bin: $(APP)
-	objcopy -j .text -j .rodata -j .shstrtab -j .typelink -j .itablink \
-	    -j .gopclntab -j .go.type -j .go.func -j .go.buildinfo -j go.fipsinfo -j .go.module \
-	    -j .noptrdata -j .data \
-	    -j .bss --set-section-flags .bss=alloc,load,contents \
-	    -j .noptrbss --set-section-flags .noptrbss=alloc,load,contents \
+	objcopy --remove-section=.debug* --remove-section=.note* \
+	    --set-section-flags .bss=alloc,load,contents \
+	    --set-section-flags .noptrbss=alloc,load,contents \
 	    $(APP) -O binary $(APP).bin
 
 tools/mbr.bin: tools/mbr.s $(APP) $(APP).bin
@@ -205,11 +204,9 @@ check_hab_keys:
 
 $(APP).bin: CROSS_COMPILE=arm-none-eabi-
 $(APP).bin: $(APP)
-	$(CROSS_COMPILE)objcopy -j .text -j .rodata -j .shstrtab -j .typelink -j .itablink \
-	    -j .gopclntab -j .go.type -j .go.func -j .go.buildinfo -j go.fipsinfo -j .go.module \
-	    -j .noptrdata -j .data \
-	    -j .bss --set-section-flags .bss=alloc,load,contents \
-	    -j .noptrbss --set-section-flags .noptrbss=alloc,load,contents \
+	$(CROSS_COMPILE)objcopy --remove-section=.debug* --remove-section=.note* \
+	    --set-section-flags .bss=alloc,load,contents \
+	    --set-section-flags .noptrbss=alloc,load,contents \
 	    $(APP) -O binary $(APP).bin
 
 $(APP).imx: $(APP).bin $(APP).dcd
