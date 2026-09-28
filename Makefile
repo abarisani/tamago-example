@@ -20,7 +20,7 @@ GOENV := GOOS=tamago GOOSPKG=${GOOSPKG} GOARCH=amd64 GOEXPERIMENT=simd
 
 ifeq ($(TARGET),microvm)
 
-TAGS := $(TAGS),linkhwinit0
+TAGS := $(TAGS),linkinithw0
 QEMU ?= qemu-system-x86_64 -machine microvm,x-option-roms=on,pit=off,pic=off,rtc=on \
         -smp $(SMP) \
         -global virtio-mmio.force-legacy=false \
