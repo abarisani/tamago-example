@@ -2,6 +2,8 @@ module github.com/usbarmory/tamago-example
 
 go 1.27.1
 
+tool github.com/usbarmory/tamago/cmd/tamago
+
 require (
 	github.com/Harvey-OS/ninep v0.0.0-20200724082702-d30a6d4f9789
 	github.com/arl/statsviz v0.8.2
@@ -11,7 +13,7 @@ require (
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.2.0
 	github.com/dustinxie/ecc v0.0.0-20210511000915-959544187564
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
-	github.com/jxsl13/goai v0.1.0
+	github.com/jxsl13/goai v0.1.1-0.20260910233428-2bc5836f5112
 	github.com/psanford/wormhole-william v1.0.8
 	github.com/traefik/yaegi v0.16.1
 	github.com/u-root/u-root v0.16.0
@@ -19,7 +21,7 @@ require (
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/go-net v0.0.0-20260924083839-356cbf14db9e
 	github.com/usbarmory/rpmb v0.0.0-20260903082741-fa6a72563433
-	github.com/usbarmory/tamago v1.27.2-0.20260923104811-857b3fbd9abe
+	github.com/usbarmory/tamago v1.27.2-0.20260928132054-28a75c3e850f
 	golang.org/x/crypto v0.57.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260921070245-7a4a4d6beae2
 	golang.org/x/term v0.46.0
