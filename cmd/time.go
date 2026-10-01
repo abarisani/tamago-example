@@ -47,7 +47,7 @@ func wakeTest() (tag string, res string) {
 
 	go func() {
 		time.Sleep(sleep)
-		goos.SendSignal(int(syscall.SIGTRAP))
+		goos.Signal(int(syscall.SIGTRAP))
 	}()
 
 	if <-c != syscall.SIGTRAP {
