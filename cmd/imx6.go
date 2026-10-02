@@ -43,7 +43,7 @@ const (
 )
 
 //go:linkname ramSize github.com/usbarmory/tamago/mem.RamSize
-var ramSize uint = 0x20000000 - dmaSize // 512MB - 10MB
+var ramSize uint = 0x10000000 - dmaSize // 256MB - 10MB
 
 var (
 	DCP   = imx6ul.DCP
