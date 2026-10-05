@@ -8,7 +8,6 @@
 package snvs
 
 import (
-	"crypto/aes"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/hkdf"
@@ -17,37 +16,16 @@ import (
 	"filippo.io/keygen"
 
 	"github.com/usbarmory/tamago/soc/nxp/imx6ul"
-	"github.com/usbarmory/tamago/soc/nxp/snvs"
 )
 
-const diversifierDev = "GoKeySNVSDeviceK"
-
-func init() {
-	if !imx6ul.Native || !imx6ul.SNVS.Available() {
-		return
-	}
-
-	// Disable ARM debug operations
-	imx6ul.Debug(false)
-
-	imx6ul.SNVS.SetPolicy(
-		snvs.SecurityPolicy{
-			Clock:             true,
-			Temperature:       true,
-			Voltage:           true,
-			SecurityViolation: true,
-			HardFail:          true,
-		},
-	)
-}
+const diversifierDev = "ArmoredWitTamaGoExampleDeviceKey"
 
 // DeviceKey derives a device key, uniquely and deterministically generated for
 // this SoC for attestation purposes.
 func DeviceKey() (deviceKey *ecdsa.PrivateKey, err error) {
-	iv := make([]byte, aes.BlockSize)
-	key, err := imx6ul.CAAM.DeriveKey([]byte(diversifierDev), iv, -1)
+	key := make([]byte, sha256.Size)
 
-	if err != nil {
+	if err = imx6ul.CAAM.DeriveKey([]byte(diversifierDev), key); err != nil {
 		return
 	}
 

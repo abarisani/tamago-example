@@ -6,9 +6,6 @@
 package network
 
 import (
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
 	"encoding/binary"
 	"fmt"
 	"io"
@@ -19,6 +16,7 @@ import (
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/term"
 
+	"github.com/usbarmory/tamago-example/internal/snvs"
 	"github.com/usbarmory/tamago-example/shell"
 )
 
@@ -145,10 +143,10 @@ func StartSSHServer(listener net.Listener, newConsole newShellFn) {
 		NoClientAuth: true,
 	}
 
-	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	key, err := snvs.DeviceKey()
 
 	if err != nil {
-		log.Fatal("private key generation error: ", err)
+		log.Fatal("private key derivation error: ", err)
 	}
 
 	signer, err := ssh.NewSignerFromKey(key)

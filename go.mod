@@ -18,11 +18,11 @@ require (
 	github.com/psanford/wormhole-william v1.0.8
 	github.com/traefik/yaegi v0.16.1
 	github.com/u-root/u-root v0.16.0
-	github.com/usbarmory/armory-boot v0.0.0-20260924074721-ca26438576b2
+	github.com/usbarmory/armory-boot v0.0.0-20261005082251-106981ae2f92
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/go-net v0.0.0-20260924083839-356cbf14db9e
 	github.com/usbarmory/rpmb v0.0.0-20260903082741-fa6a72563433
-	github.com/usbarmory/tamago v1.27.2-0.20261005075714-e7a0291616a5
+	github.com/usbarmory/tamago v1.27.2-0.20261005120356-5942894db697
 	golang.org/x/crypto v0.57.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20261004121123-8f0f1112abdb
 	golang.org/x/term v0.46.0
@@ -41,10 +41,13 @@ require (
 	github.com/dblohm7/wingoes v0.0.0-20260526185140-fb298caac7ca // indirect
 	github.com/decred/dcrd/crypto/blake256 v1.1.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.4.0 // indirect
+	github.com/dsoprea/go-ext4 v0.0.0-20190528173430-c13b09fc0ff8 // indirect
+	github.com/dsoprea/go-logging v0.0.0-20200710184922-b02d349568dd // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.3 // indirect
 	github.com/gaissmai/bart v0.29.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-json-experiment/json v0.0.0-20260820222146-c27c302e5fc3 // indirect
 	github.com/godbus/dbus/v5 v5.2.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
