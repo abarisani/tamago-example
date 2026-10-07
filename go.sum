@@ -226,8 +226,8 @@ github.com/u-root/uio v0.0.0-20240224005618-d2acac8f3701 h1:pyC9PaHYZFgEKFdlp3G8
 github.com/u-root/uio v0.0.0-20240224005618-d2acac8f3701/go.mod h1:P3a5rG4X7tI17Nn3aOIAYr5HbIMukwXG0urG0WuL8OA=
 github.com/ulikunitz/xz v0.5.15 h1:9DNdB5s+SgV3bQ2ApL10xRc35ck0DuIX/isZvIk+ubY=
 github.com/ulikunitz/xz v0.5.15/go.mod h1:nbz6k7qbPmH4IRqmfOplQw/tblSgqTqBwxkY0oWt/14=
-github.com/usbarmory/armory-boot v0.0.0-20260606204932-9c2bd55b018c h1:fmZ/OxEEMuwab2+TjoOKE1CAGLLsk7Z+OGMVjDszRKM=
-github.com/usbarmory/armory-boot v0.0.0-20260606204932-9c2bd55b018c/go.mod h1:R0b5YUwFxOSilN4YJoFcyeFOmopBSlC3AynUVlMjA58=
+github.com/usbarmory/armory-boot v0.0.0-20261005082251-106981ae2f92 h1:69QHHnuG7XCViqeF/chbTSEZ+TRKULSW8BpdMQMF5PI=
+github.com/usbarmory/armory-boot v0.0.0-20261005082251-106981ae2f92/go.mod h1:1JqQ1wD1/ZtifK+cI/5BrBwboxC6K8rvFNYZI1ieI80=
 github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c h1:085Xai8lKeaO7NicFnhLAn5Aa4uuPR9V5D8HbygYCA8=
 github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c/go.mod h1:ckguQ9IhSOqu3Aj5k739o8aleJE8q1ZwmUsQEKkXpiM=
 github.com/usbarmory/go-net v0.0.0-20260714134120-c2c964e7084c h1:ubYfZqO8u2mV0stDpvCTEfGp6e0aLBda/OAGniDdQzs=
@@ -242,8 +242,8 @@ go4.org/mem v0.0.0-20240501181205-ae6ca9944745 h1:Tl++JLUCe4sxGu8cTpDzRLd3tN7US4
 go4.org/mem v0.0.0-20240501181205-ae6ca9944745/go.mod h1:reUoABIJ9ikfM5sgtSF3Wushcza7+WeD01VB9Lirh3g=
 go4.org/netipx v0.0.0-20231129151722-fdeea329fbba h1:0b9z3AuHCjxk0x/opv64kcgZLBseWJUpBw5I82+2U4M=
 go4.org/netipx v0.0.0-20231129151722-fdeea329fbba/go.mod h1:PLyyIXexvUFg3Owu6p/WfdlivPbZJsZdgWZlrGope/Y=
-golang.org/x/crypto v0.55.0 h1:+KWHjbgOaAQ66dh/YlkZKHlz9ZUlq61AFirAR9ntP8M=
-golang.org/x/crypto v0.55.0/go.mod h1:uq0V9dE/fzQuJtbnL+2EhWOE63vo164FY8xqEnV9xis=
+golang.org/x/crypto v0.56.0 h1:GUh5Ii4J5jtcseSMiRqr1jXCNHoxjeV9Fmekc2oLy6Y=
+golang.org/x/crypto v0.56.0/go.mod h1:OMW5y6CY9l38uPLmxU6l6pwcXp1obtLo3e6gT7gQR2I=
 golang.org/x/crypto/x509roots/fallback v0.0.0-20260819204246-82adefa711cb h1:lf8faSSUsT6HuUC77s/Lp5M6ZcWtywURlEb1M3sTJzo=
 golang.org/x/crypto/x509roots/fallback v0.0.0-20260819204246-82adefa711cb/go.mod h1:HPze8vhfG6fO06AM+VSvxRm4E3+5Yk375mgrJ5M2z1E=
 golang.org/x/exp v0.0.0-20260410095643-746e56fc9e2f h1:W3F4c+6OLc6H2lb//N1q4WpJkhzJCK5J6kUi1NTVXfM=
