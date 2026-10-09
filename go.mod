@@ -1,6 +1,6 @@
 module github.com/usbarmory/tamago-example
 
-go 1.27.1
+go 1.27.2
 
 tool github.com/usbarmory/tamago/cmd/tamago
 
@@ -13,15 +13,15 @@ require (
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.2.0
 	github.com/dustinxie/ecc v0.0.0-20210511000915-959544187564
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
-	github.com/jxsl13/goai v0.1.1-0.20260910233428-2bc5836f5112
 	github.com/psanford/wormhole-william v1.0.8
+	github.com/townsendmerino/goinfer v0.22.0
 	github.com/traefik/yaegi v0.16.1
 	github.com/u-root/u-root v0.16.0
 	github.com/usbarmory/armory-boot v0.0.0-20261005082251-106981ae2f92
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
-	github.com/usbarmory/go-net v0.0.0-20260714134120-c2c964e7084c
+	github.com/usbarmory/go-net v0.0.0-20260924083839-356cbf14db9e
 	github.com/usbarmory/rpmb v0.0.0-20260903082159-7bccd4b8a49b
-	github.com/usbarmory/tamago v1.27.2-0.20261008073616-026243ef1d58
+	github.com/usbarmory/tamago v1.27.2
 	golang.org/x/crypto v0.56.0
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260819204246-82adefa711cb
 	golang.org/x/term v0.45.0
@@ -58,7 +58,7 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.26 // indirect
 	github.com/pires/go-proxyproto v0.8.1 // indirect
 	github.com/safchain/ethtool v0.3.0 // indirect
-	github.com/soypat/lneto v0.2.0 // indirect
+	github.com/soypat/lneto v0.3.2 // indirect
 	github.com/tailscale/certstore v0.1.1-0.20260409135935-3638fb84b77d // indirect
 	github.com/tailscale/go-winio v0.0.0-20231025203758-c4f33415bf55 // indirect
 	github.com/tailscale/hujson v0.0.0-20260302212456-ecc657c15afd // indirect
@@ -66,6 +66,7 @@ require (
 	github.com/tailscale/web-client-prebuilt v0.0.0-20250124233751-d4cd19a26976 // indirect
 	github.com/tailscale/wireguard-go v0.0.0-20260715223240-2e01ba5b00f0 // indirect
 	github.com/therootcompany/xz v1.0.1 // indirect
+	github.com/townsendmerino/aikit v1.57.0 // indirect
 	github.com/u-root/uio v0.0.0-20240224005618-d2acac8f3701 // indirect
 	github.com/ulikunitz/xz v0.5.15 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
