@@ -1,6 +1,6 @@
 module github.com/usbarmory/tamago-example
 
-go 1.27.1
+go 1.27.2
 
 tool github.com/usbarmory/tamago/cmd/tamago
 
@@ -14,17 +14,17 @@ require (
 	github.com/btcsuite/btcd/chaincfg/chainhash v1.2.0
 	github.com/dustinxie/ecc v0.0.0-20210511000915-959544187564
 	github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
-	github.com/jxsl13/goai v0.1.0
 	github.com/psanford/wormhole-william v1.0.8
+	github.com/townsendmerino/goinfer v0.22.0
 	github.com/traefik/yaegi v0.16.1
 	github.com/u-root/u-root v0.16.0
 	github.com/usbarmory/armory-boot v0.0.0-20261005082251-106981ae2f92
 	github.com/usbarmory/crucible v0.0.0-20260105222051-0bd71c72232c
 	github.com/usbarmory/go-net v0.0.0-20260924083839-356cbf14db9e
-	github.com/usbarmory/rpmb v0.0.0-20260903082741-fa6a72563433
-	github.com/usbarmory/tamago v1.27.2-0.20261008073616-026243ef1d58
+	github.com/usbarmory/rpmb v0.0.0-20260903082159-7bccd4b8a49b
+	github.com/usbarmory/tamago v1.27.2
 	golang.org/x/crypto v0.57.0
-	golang.org/x/crypto/x509roots/fallback v0.0.0-20261004121123-8f0f1112abdb
+	golang.org/x/crypto/x509roots/fallback v0.0.0-20260819204246-82adefa711cb
 	golang.org/x/term v0.46.0
 	sigsum.org/sigsum-go v0.14.1
 	tailscale.com v1.104.0
@@ -69,6 +69,7 @@ require (
 	github.com/tailscale/web-client-prebuilt v0.0.0-20260917222731-e0ed2d0d0fea // indirect
 	github.com/tailscale/wireguard-go v0.0.0-20260928213032-417aef361226 // indirect
 	github.com/therootcompany/xz v1.0.1 // indirect
+	github.com/townsendmerino/aikit v1.57.0 // indirect
 	github.com/u-root/uio v0.0.0-20240224005618-d2acac8f3701 // indirect
 	github.com/ulikunitz/xz v0.5.16 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
